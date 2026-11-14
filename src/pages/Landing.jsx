@@ -25,8 +25,16 @@ export default function Landing({ go, cv, startSample }) {
   const demo = useMemo(() => sampleCV(), []);
   const [open, setOpen] = useState(2);
   const resume = hasData(cv);
-  const arc = ['photo-2.jpg', 'executif.encre.georgia', 'photo-1.jpg', 'moderne.teranga.opensans', 'photo-3.jpg', 'timeline.baobab.sourcesans', 'elegant.bordeaux.garamond'];
-  const strip = ['moderne.teranga.lato', 'classique.encre.georgia', 'bandeau.baobab.opensans', 'timeline.bordeaux.sourcesans', 'impact.noir.roboto', 'sante.sarcelle.carlito'];
+  const arc = [
+    { id: 'photo-2.jpg' },
+    { id: 'elegant.or.garamond', tag: 'Juriste', gold: true },
+    { id: 'photo-1.jpg' },
+    { id: 'bandeau.bordeaux.lato', tag: 'Score ATS 96' },
+    { id: 'impact.bordeaux.opensans', tag: 'Marketing', gold: true },
+    { id: 'photo-3.jpg' },
+    { id: 'timeline.emeraude.sourcesans', tag: 'Chef de projet' },
+  ];
+  const strip = ['moderne.bordeaux.lato', 'classique.encre.georgia', 'bandeau.or.opensans', 'timeline.emeraude.sourcesans', 'impact.bordeaux.roboto', 'elegant.or.garamond'];
   const marquee = [...JOBS, ...JOBS].map((j) => j.label);
 
   return (
@@ -44,9 +52,14 @@ export default function Landing({ go, cv, startSample }) {
         </div>
 
         <div className="arc" aria-hidden="true">
-          {arc.map((id, i) => (
-            <div className={`arc-card${id.endsWith('.jpg') ? ' is-photo' : ''}`} key={id} style={{ '--i': i - 3, '--a': Math.abs(i - 3) }}>
-              {id.endsWith('.jpg') ? <img src={`./${id}`} alt="" loading="eager" /> : <ScaledCV cv={demo} templateId={id} clip />}
+          <svg className="arc-ring" viewBox="0 0 1200 600" fill="none">
+            <path d="M40 600 A560 560 0 0 1 1160 600" stroke="currentColor" strokeWidth="18" strokeDasharray="1.5 9" />
+            <path d="M120 600 A480 480 0 0 1 1080 600" stroke="currentColor" strokeWidth="1" opacity=".6" />
+          </svg>
+          {arc.map((c, i) => (
+            <div className={`arc-card${c.id.endsWith('.jpg') ? ' is-photo' : ''}`} key={c.id} style={{ '--i': i - 3, '--a': Math.abs(i - 3) }}>
+              {c.tag && <span className={`arc-tag${c.gold ? ' gold' : ''}`}>{c.tag}</span>}
+              {c.id.endsWith('.jpg') ? <img src={`./${c.id}`} alt="" loading="eager" /> : <ScaledCV cv={demo} templateId={c.id} clip />}
             </div>
           ))}
           <div className="float float-score"><ScoreRing score={96} size={46} /><span><strong>Score ATS</strong><br />Excellent</span></div>
@@ -133,7 +146,7 @@ export default function Landing({ go, cv, startSample }) {
         </div>
         <div className="bento">
           <article className="b-card b-dark">
-            <div className="b-sheet"><ScaledCV cv={demo} templateId="moderne.teranga.lato" clip /></div>
+            <div className="b-sheet"><ScaledCV cv={demo} templateId="bandeau.or.lato" clip /></div>
             <div className="b-text">
               <h3>Un aperçu qui se remplit pendant que vous écrivez</h3>
               <p>Chaque réponse apparaît aussitôt sur la feuille A4, dans le modèle choisi.</p>

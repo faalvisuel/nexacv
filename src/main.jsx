@@ -24,7 +24,7 @@ function App() {
   const go = (p, jobId) => {
     if (jobId) {
       const j = getJob(jobId);
-      setCv((c) => ({ ...c, jobId, step: 0, template: c.template || templateId(j.layout, 'encre', 'carlito'), personal: { ...c.personal, title: c.personal.title || j.titles[0] } }));
+      setCv((c) => ({ ...c, jobId, step: 0, template: c.template || templateId(j.layout, 'bordeaux', 'carlito'), personal: { ...c.personal, title: c.personal.title || j.titles[0] } }));
     }
     window.location.hash = `/${p}`;
     window.scrollTo(0, 0);

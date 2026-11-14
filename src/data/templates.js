@@ -25,7 +25,7 @@ export const PALETTES = [
   { id: 'ocean', name: 'Océan', color: '#0B5D8C' },
   { id: 'baobab', name: 'Baobab', color: '#2F5D3A' },
   { id: 'emeraude', name: 'Émeraude', color: '#0F7B6C' },
-  { id: 'bordeaux', name: 'Bordeaux', color: '#7A1F35' },
+  { id: 'bordeaux', name: 'Bordeaux', color: '#8B1E3F' },
   { id: 'prune', name: 'Prune', color: '#5B2A6E' },
   { id: 'indigo', name: 'Indigo', color: '#3730A3' },
   { id: 'ardoise', name: 'Ardoise', color: '#475569' },
@@ -33,7 +33,7 @@ export const PALETTES = [
   { id: 'teranga', name: 'Teranga', color: '#B45309' },
   { id: 'sarcelle', name: 'Sarcelle', color: '#0E7490' },
   { id: 'cobalt', name: 'Cobalt', color: '#1D4ED8' },
-  { id: 'kaki', name: 'Kaki', color: '#5C5B2E' },
+  { id: 'or', name: 'Or', color: '#8C6A1C' },
 ];
 
 export const FONTS = [

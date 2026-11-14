@@ -156,7 +156,7 @@ export default function Builder({ cv, setCv, go }) {
     setCv((c) => ({
       ...c,
       jobId: j.id,
-      template: c.template || templateId(j.layout, 'encre', 'carlito'),
+      template: c.template || templateId(j.layout, 'bordeaux', 'carlito'),
       personal: { ...c.personal, title: c.personal.title || j.titles[0] },
     }));
     setTimeout(() => document.getElementById('level-title')?.scrollIntoView({ behavior: 'smooth', block: 'start' }), 50);
@@ -168,7 +168,7 @@ export default function Builder({ cv, setCv, go }) {
     return [j.label, ...j.titles, j.category].join(' ').toLowerCase().includes(q);
   });
 
-  const t = parseTemplate(cv.template || (job ? templateId(job.layout, 'encre', 'carlito') : ''));
+  const t = parseTemplate(cv.template || (job ? templateId(job.layout, 'bordeaux', 'carlito') : ''));
   const recommended = useMemo(() => {
     const seen = new Set();
     return templatesFor(cv.jobId).filter((x) => {
