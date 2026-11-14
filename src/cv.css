@@ -1,0 +1,117 @@
+/* ===== Feuille CV (A4) — 12 mises en page ATS ===== */
+.cv {
+  --cv-accent: #1B2A4A;
+  --cv-font: Arial, sans-serif;
+  --cv-ink: #1f2328;
+  --cv-muted: #555b63;
+  box-sizing: border-box;
+  width: 794px;
+  min-height: 1123px;
+  padding: 52px 56px;
+  background: #fff;
+  color: var(--cv-ink);
+  font-family: var(--cv-font);
+  font-size: 13.5px;
+  line-height: 1.45;
+  text-align: left;
+}
+.cv * { box-sizing: border-box; }
+.cv h1, .cv h2, .cv p, .cv ul { margin: 0; }
+.cv-header { margin-bottom: 18px; }
+.cv-name { font-size: 30px; line-height: 1.1; font-weight: 700; letter-spacing: -0.01em; }
+.cv-title { font-size: 16px; color: var(--cv-accent); font-weight: 600; margin-top: 4px; }
+.cv-contact { margin-top: 8px; font-size: 12.5px; color: var(--cv-muted); display: flex; flex-wrap: wrap; gap: 2px 0; }
+.cv-contact span:not(:last-child)::after { content: '|'; margin: 0 8px; color: #b9bec5; }
+.cv-section { margin-top: 16px; break-inside: auto; }
+.cv-h2 { font-size: 13px; font-weight: 700; color: var(--cv-accent); letter-spacing: 0.06em; text-transform: uppercase; padding-bottom: 4px; border-bottom: 1px solid #d4d8dd; margin-bottom: 8px; }
+.cv-summary { color: var(--cv-ink); }
+.cv-item { margin-bottom: 11px; break-inside: avoid; }
+.cv-item:last-child { margin-bottom: 0; }
+.cv-item-head { display: flex; flex-wrap: wrap; align-items: baseline; gap: 0 8px; }
+.cv-item-title { font-weight: 700; }
+.cv-item-org { color: var(--cv-muted); }
+.cv-item-org::before { content: '— '; }
+.cv-item-date { margin-left: auto; font-size: 12.5px; color: var(--cv-muted); white-space: nowrap; }
+.cv ul { padding-left: 18px; margin-top: 4px; }
+.cv li { margin: 2px 0; }
+.cv-item-details { color: var(--cv-muted); margin-top: 2px; }
+.cv-skills p + p { margin-top: 3px; }
+.cv-plain { padding-left: 18px; }
+
+/* 1. Classique */
+.cv-l-classique .cv-header { text-align: center; border-bottom: 2px solid var(--cv-accent); padding-bottom: 14px; }
+.cv-l-classique .cv-contact { justify-content: center; }
+.cv-l-classique .cv-title { color: var(--cv-ink); font-weight: 400; }
+.cv-l-classique .cv-h2 { text-align: left; }
+
+/* 2. Moderne */
+.cv-l-moderne .cv-name { color: var(--cv-accent); font-size: 34px; }
+.cv-l-moderne .cv-title { color: var(--cv-ink); }
+.cv-l-moderne .cv-h2 { border-bottom: 0; padding-bottom: 0; display: flex; align-items: center; gap: 10px; text-transform: none; font-size: 16px; letter-spacing: 0; }
+.cv-l-moderne .cv-h2::after { content: ''; flex: 1; height: 2px; background: var(--cv-accent); opacity: .25; }
+
+/* 3. Exécutif */
+.cv-l-executif { font-size: 13px; padding: 46px 52px; }
+.cv-l-executif .cv-header { display: grid; grid-template-columns: 1fr; border-left: 5px solid var(--cv-accent); padding-left: 14px; }
+.cv-l-executif .cv-name { font-size: 28px; text-transform: uppercase; letter-spacing: 0.04em; }
+.cv-l-executif .cv-h2 { background: none; border-bottom: 1.5px solid var(--cv-ink); color: var(--cv-ink); }
+.cv-l-executif .cv-item-title { color: var(--cv-accent); }
+
+/* 4. Minimal */
+.cv-l-minimal { padding: 64px 72px; }
+.cv-l-minimal .cv-name { font-weight: 400; font-size: 34px; }
+.cv-l-minimal .cv-title { color: var(--cv-muted); font-weight: 400; }
+.cv-l-minimal .cv-h2 { border: 0; text-transform: none; letter-spacing: 0; font-size: 15px; color: var(--cv-accent); margin-bottom: 6px; }
+.cv-l-minimal .cv-section { margin-top: 22px; }
+
+/* 5. Tech */
+.cv-l-tech .cv-header { border-bottom: 3px solid var(--cv-accent); padding-bottom: 12px; }
+.cv-l-tech .cv-h2 { border: 0; background: color-mix(in srgb, var(--cv-accent) 10%, #fff); padding: 4px 8px; border-radius: 3px; }
+.cv-l-tech .cv-item-date { font-weight: 600; color: var(--cv-accent); }
+
+/* 6. Bandeau */
+.cv-l-bandeau { padding-top: 0; }
+.cv-l-bandeau .cv-header { margin: 0 -56px 20px; padding: 36px 56px 24px; background: var(--cv-accent); color: #fff; }
+.cv-l-bandeau .cv-title { color: #fff; opacity: .92; }
+.cv-l-bandeau .cv-contact { color: #fff; opacity: .88; }
+.cv-l-bandeau .cv-contact span:not(:last-child)::after { color: rgba(255,255,255,.5); }
+.cv-l-bandeau .cv-h2 { border-bottom: 2px solid var(--cv-accent); }
+
+/* 7. Académique */
+.cv-l-academique .cv-header { text-align: center; }
+.cv-l-academique .cv-contact { justify-content: center; }
+.cv-l-academique .cv-h2 { text-align: center; border-bottom: 0; border-top: 1px solid #d4d8dd; padding-top: 8px; letter-spacing: 0.14em; }
+
+/* 8. Compact */
+.cv-l-compact { font-size: 12.5px; line-height: 1.38; padding: 40px 46px; }
+.cv-l-compact .cv-name { font-size: 26px; }
+.cv-l-compact .cv-header { display: block; margin-bottom: 10px; }
+.cv-l-compact .cv-section { margin-top: 11px; }
+.cv-l-compact .cv-h2 { font-size: 12px; margin-bottom: 5px; }
+.cv-l-compact .cv-item { margin-bottom: 7px; }
+
+/* 9. Élégant */
+.cv-l-elegant .cv-name { font-size: 38px; font-weight: 400; letter-spacing: 0.02em; color: var(--cv-accent); }
+.cv-l-elegant .cv-title { font-variant: small-caps; letter-spacing: 0.08em; color: var(--cv-ink); font-weight: 400; font-size: 17px; }
+.cv-l-elegant .cv-h2 { text-transform: none; font-variant: small-caps; font-size: 17px; letter-spacing: 0.06em; font-weight: 600; border-bottom: 0.75px solid var(--cv-accent); }
+
+/* 10. Chronologie */
+.cv-l-timeline .cv-s-experience .cv-item, .cv-l-timeline .cv-s-formation .cv-item { position: relative; padding-left: 128px; }
+.cv-l-timeline .cv-s-experience .cv-item-date, .cv-l-timeline .cv-s-formation .cv-item-date { position: absolute; left: 0; top: 1px; width: 116px; white-space: normal; color: var(--cv-accent); font-weight: 600; }
+.cv-l-timeline .cv-item-head { padding-right: 0; }
+.cv-l-timeline .cv-h2 { border-bottom-color: var(--cv-accent); }
+.cv-l-timeline .cv-name { color: var(--cv-accent); }
+
+/* 11. Clair */
+.cv-l-sante .cv-header { border-bottom: 0; }
+.cv-l-sante .cv-name { color: var(--cv-accent); }
+.cv-l-sante .cv-h2 { border: 0; background: color-mix(in srgb, var(--cv-accent) 9%, #fff); color: var(--cv-accent); padding: 5px 10px; text-transform: none; letter-spacing: 0; font-size: 15px; }
+.cv-l-sante .cv-section-body { padding: 0 10px; }
+
+/* 12. Impact */
+.cv-l-impact .cv-header { margin-bottom: 22px; }
+.cv-l-impact .cv-name { font-size: 18px; font-weight: 600; color: var(--cv-muted); order: 2; }
+.cv-l-impact .cv-header { display: flex; flex-direction: column; }
+.cv-l-impact .cv-title { order: 1; font-size: 32px; line-height: 1.1; font-weight: 800; margin: 0 0 6px; color: var(--cv-accent); }
+.cv-l-impact .cv-contact { order: 3; }
+.cv-l-impact .cv-h2 { border-bottom: 3px solid var(--cv-accent); display: inline-block; padding-right: 20px; }

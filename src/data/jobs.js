@@ -1,0 +1,440 @@
+// Base de connaissances par métier : compétences attendues par les ATS,
+// exemples de réalisations (formule Verbe + action + résultat chiffré),
+// et mise en page recommandée.
+// Les [crochets] sont à remplacer par les vrais chiffres de l'utilisateur.
+
+export const CATEGORIES = [
+  'Tech & Data',
+  'Commerce & Marketing',
+  'Finance & Gestion',
+  'Santé & Social',
+  'Industrie & Terrain',
+  'Services & Support',
+  'Création',
+  'Débuter',
+];
+
+export const JOBS = [
+  {
+    id: 'dev-web', label: 'Développeur web', category: 'Tech & Data', icon: '</>',
+    titles: ['Développeur Full Stack', 'Développeur Front-end', 'Développeur Back-end', 'Développeur React'],
+    skills: ['JavaScript', 'TypeScript', 'React', 'Node.js', 'HTML5', 'CSS3', 'API REST', 'Git', 'SQL', 'PostgreSQL', 'Docker', 'Tests unitaires', 'CI/CD', 'Agile Scrum', 'Next.js', 'Python'],
+    soft: ['Résolution de problèmes', 'Travail en équipe', 'Autonomie', 'Curiosité technique'],
+    bullets: [
+      'Développé [X] fonctionnalités en React et Node.js utilisées par [X] utilisateurs actifs par mois',
+      'Réduit le temps de chargement des pages de [X] % en optimisant le code et les images',
+      'Mis en place une chaîne CI/CD avec GitHub Actions, réduisant les mises en production de [X] h à [X] min',
+      'Conçu et documenté [X] API REST consommées par les applications web et mobile',
+      'Écrit des tests automatisés portant la couverture de code de [X] % à [X] %',
+    ],
+    summary: {
+      junior: 'Développeur web formé à {skills}, passionné par la création d’applications rapides et accessibles. Recherche un poste de {title} pour mettre mes compétences au service d’une équipe produit exigeante.',
+      mid: 'Développeur web avec {years} ans d’expérience sur {skills}. J’ai livré des applications utilisées au quotidien et je recherche un poste de {title} où allier qualité du code et impact produit.',
+      senior: '{title} senior, {years} ans d’expérience. Expert {skills}, j’ai piloté l’architecture de produits à fort trafic et encadré des équipes de développeurs.',
+    },
+    layout: 'tech', order: ['profil', 'competences', 'experience', 'formation', 'langues', 'certifications', 'interets'],
+  },
+  {
+    id: 'data', label: 'Data analyst', category: 'Tech & Data', icon: '▦',
+    titles: ['Data Analyst', 'Data Scientist', 'Business Intelligence Analyst', 'Analyste de données'],
+    skills: ['SQL', 'Python', 'Pandas', 'Power BI', 'Tableau', 'Excel avancé', 'Statistiques', 'Machine Learning', 'ETL', 'Data visualisation', 'Google Analytics', 'BigQuery', 'R', 'A/B testing'],
+    soft: ['Esprit analytique', 'Vulgarisation', 'Rigueur', 'Sens business'],
+    bullets: [
+      'Construit [X] tableaux de bord Power BI suivis chaque semaine par la direction',
+      'Automatisé la production de rapports en Python, économisant [X] heures de travail par mois',
+      'Identifié un levier de réduction des coûts de [X] % grâce à l’analyse de [X] millions de lignes de données',
+      'Développé un modèle de prévision des ventes avec une précision de [X] %',
+      'Fiabilisé la qualité des données en réduisant les erreurs de [X] %',
+    ],
+    summary: {
+      junior: 'Analyste de données formé à {skills}. Je transforme des données brutes en décisions claires et je recherche un poste de {title}.',
+      mid: '{title} avec {years} ans d’expérience en {skills}. J’aide les équipes métier à piloter leur activité grâce à des analyses fiables et des tableaux de bord utiles.',
+      senior: '{title} senior, {years} ans d’expérience. Je structure la culture data des organisations : gouvernance, modèles prédictifs et pilotage par la donnée avec {skills}.',
+    },
+    layout: 'moderne', order: ['profil', 'competences', 'experience', 'formation', 'certifications', 'langues', 'interets'],
+  },
+  {
+    id: 'reseau', label: 'Technicien réseaux & IT', category: 'Tech & Data', icon: '⌘',
+    titles: ['Technicien Support Informatique', 'Administrateur Systèmes et Réseaux', 'Technicien Réseaux Télécom', 'Ingénieur Cybersécurité'],
+    skills: ['Windows Server', 'Linux', 'Active Directory', 'Cisco', 'TCP/IP', 'VPN', 'Pare-feu', 'Virtualisation VMware', 'Microsoft 365', 'Support niveau 2', 'ITIL', 'Cybersécurité', 'Fibre optique', 'Sauvegarde'],
+    soft: ['Réactivité', 'Pédagogie', 'Méthode', 'Sens du service'],
+    bullets: [
+      'Assuré le support de [X] utilisateurs avec un taux de résolution au premier contact de [X] %',
+      'Déployé et sécurisé un réseau de [X] postes sur [X] sites',
+      'Migré [X] serveurs vers un environnement virtualisé, réduisant les coûts d’infrastructure de [X] %',
+      'Mis en place une politique de sauvegarde garantissant un taux de disponibilité de [X] %',
+    ],
+    summary: {
+      junior: 'Technicien informatique formé à {skills}, rigoureux et orienté utilisateur. Recherche un poste de {title}.',
+      mid: '{title} avec {years} ans d’expérience sur {skills}. Je garantis des systèmes fiables, sécurisés et disponibles.',
+      senior: '{title}, {years} ans d’expérience. Je conçois et sécurise des infrastructures critiques ({skills}) et j’encadre des équipes techniques.',
+    },
+    layout: 'compact', order: ['profil', 'competences', 'experience', 'certifications', 'formation', 'langues', 'interets'],
+  },
+  {
+    id: 'commercial', label: 'Commercial / Ventes', category: 'Commerce & Marketing', icon: '↗',
+    titles: ['Commercial terrain', 'Business Developer', 'Chargé de clientèle', 'Responsable des ventes'],
+    skills: ['Prospection', 'Négociation', 'Gestion de portefeuille clients', 'CRM Salesforce', 'HubSpot', 'Closing', 'Fidélisation', 'Prévisions de ventes', 'Grands comptes', 'Appels d’offres', 'B2B', 'Reporting commercial'],
+    soft: ['Persuasion', 'Ténacité', 'Écoute active', 'Orientation résultats'],
+    bullets: [
+      'Dépassé l’objectif annuel de chiffre d’affaires de [X] % ([X] FCFA / €)',
+      'Signé [X] nouveaux clients grands comptes en [X] mois',
+      'Développé un portefeuille de [X] clients avec un taux de fidélisation de [X] %',
+      'Augmenté le panier moyen de [X] % grâce à la vente additionnelle',
+      'Classé n°[X] sur [X] commerciaux de la région',
+    ],
+    summary: {
+      junior: 'Commercial dynamique, à l’aise en prospection et en négociation. Recherche un poste de {title} pour développer le chiffre d’affaires d’une entreprise ambitieuse.',
+      mid: '{title} avec {years} ans d’expérience. Spécialisé en {skills}, je dépasse régulièrement mes objectifs et je construis des relations clients durables.',
+      senior: '{title}, {years} ans d’expérience. J’ai bâti et piloté des équipes commerciales performantes et ouvert de nouveaux marchés ({skills}).',
+    },
+    layout: 'moderne', order: ['profil', 'experience', 'competences', 'formation', 'langues', 'certifications', 'interets'],
+  },
+  {
+    id: 'marketing', label: 'Marketing digital', category: 'Commerce & Marketing', icon: '◎',
+    titles: ['Chargé de marketing digital', 'Community Manager', 'Growth Marketer', 'Responsable marketing'],
+    skills: ['SEO', 'SEA Google Ads', 'Meta Ads', 'Content marketing', 'Emailing', 'Google Analytics 4', 'Réseaux sociaux', 'Copywriting', 'Marketing automation', 'Canva', 'CRM', 'Stratégie de marque', 'TikTok Ads', 'Social listening'],
+    soft: ['Créativité', 'Esprit analytique', 'Réactivité', 'Sens de la communication'],
+    bullets: [
+      'Fait croître la communauté Instagram de [X] à [X] abonnés en [X] mois',
+      'Géré un budget publicitaire de [X] avec un retour sur investissement de [X]',
+      'Augmenté le trafic organique du site de [X] % grâce à une stratégie SEO',
+      'Lancé [X] campagnes emailing avec un taux d’ouverture moyen de [X] %',
+      'Réduit le coût par acquisition de [X] % en optimisant les campagnes payantes',
+    ],
+    summary: {
+      junior: 'Passionné de marketing digital, formé à {skills}. Je recherche un poste de {title} pour créer des campagnes qui font grandir une marque.',
+      mid: '{title} avec {years} ans d’expérience en {skills}. Je pilote des campagnes rentables et mesurables, de la stratégie à l’exécution.',
+      senior: '{title}, {years} ans d’expérience. Je définis des stratégies d’acquisition et de marque qui génèrent une croissance mesurable ({skills}).',
+    },
+    layout: 'moderne', order: ['profil', 'experience', 'competences', 'formation', 'certifications', 'langues', 'interets'],
+  },
+  {
+    id: 'compta', label: 'Comptable', category: 'Finance & Gestion', icon: '∑',
+    titles: ['Comptable', 'Comptable général', 'Assistant comptable', 'Chef comptable'],
+    skills: ['Comptabilité générale', 'SYSCOHADA', 'Plan comptable général', 'Rapprochements bancaires', 'Déclarations fiscales', 'TVA', 'Clôtures mensuelles', 'Bilan', 'Sage', 'Excel avancé', 'Paie', 'Audit', 'Odoo', 'Trésorerie'],
+    soft: ['Rigueur', 'Discrétion', 'Organisation', 'Fiabilité'],
+    bullets: [
+      'Tenu la comptabilité de [X] sociétés en respectant 100 % des échéances fiscales',
+      'Réduit le délai de clôture mensuelle de [X] à [X] jours',
+      'Préparé les bilans annuels et liasses fiscales pour un chiffre d’affaires de [X]',
+      'Mis en place des procédures de contrôle réduisant les écarts de caisse de [X] %',
+    ],
+    summary: {
+      junior: 'Comptable rigoureux formé à {skills}. Recherche un poste de {title} au sein d’un service financier exigeant.',
+      mid: '{title} avec {years} ans d’expérience en {skills}. Je garantis des comptes fiables et des échéances fiscales respectées.',
+      senior: '{title}, {years} ans d’expérience. Je supervise les clôtures, la fiscalité et l’équipe comptable ({skills}).',
+    },
+    layout: 'classique', order: ['profil', 'experience', 'competences', 'formation', 'certifications', 'langues', 'interets'],
+  },
+  {
+    id: 'finance', label: 'Banque & Finance', category: 'Finance & Gestion', icon: '%',
+    titles: ['Chargé de clientèle bancaire', 'Analyste financier', 'Contrôleur de gestion', 'Analyste crédit'],
+    skills: ['Analyse financière', 'Contrôle de gestion', 'Budget', 'Analyse crédit', 'Conformité KYC', 'Modélisation financière', 'Excel avancé', 'Reporting', 'IFRS', 'Gestion des risques', 'Microfinance', 'Power BI'],
+    soft: ['Rigueur', 'Esprit de synthèse', 'Éthique', 'Sens commercial'],
+    bullets: [
+      'Analysé [X] dossiers de crédit par mois avec un taux d’impayés inférieur à [X] %',
+      'Construit le budget annuel de [X] et suivi les écarts mensuels',
+      'Géré un portefeuille de [X] clients représentant [X] d’encours',
+      'Automatisé le reporting financier, réduisant le temps de production de [X] %',
+    ],
+    summary: {
+      junior: 'Diplômé en finance, formé à {skills}. Recherche un poste de {title} pour contribuer à des décisions financières solides.',
+      mid: '{title} avec {years} ans d’expérience en {skills}. J’apporte des analyses fiables qui sécurisent la performance.',
+      senior: '{title}, {years} ans d’expérience. Je pilote la performance financière et la maîtrise des risques ({skills}).',
+    },
+    layout: 'executif', order: ['profil', 'experience', 'formation', 'competences', 'certifications', 'langues', 'interets'],
+  },
+  {
+    id: 'rh', label: 'Ressources humaines', category: 'Finance & Gestion', icon: '◐',
+    titles: ['Chargé de recrutement', 'Assistant RH', 'Responsable RH', 'Gestionnaire de paie'],
+    skills: ['Recrutement', 'Sourcing', 'Entretiens structurés', 'Onboarding', 'Gestion de la paie', 'Droit du travail', 'SIRH', 'Formation', 'GPEC', 'Relations sociales', 'Marque employeur', 'Administration du personnel'],
+    soft: ['Écoute', 'Diplomatie', 'Confidentialité', 'Organisation'],
+    bullets: [
+      'Recruté [X] collaborateurs en [X] mois avec un délai moyen de [X] jours',
+      'Géré la paie de [X] salariés sans erreur sur [X] mois',
+      'Conçu un parcours d’intégration réduisant le turnover des nouveaux de [X] %',
+      'Organisé [X] sessions de formation pour [X] collaborateurs',
+    ],
+    summary: {
+      junior: 'Passionné par l’humain, formé à {skills}. Recherche un poste de {title} pour accompagner les talents et les managers.',
+      mid: '{title} avec {years} ans d’expérience en {skills}. J’aide les entreprises à recruter, intégrer et fidéliser leurs équipes.',
+      senior: '{title}, {years} ans d’expérience. Je construis des politiques RH qui soutiennent la croissance ({skills}).',
+    },
+    layout: 'elegant', order: ['profil', 'experience', 'competences', 'formation', 'langues', 'certifications', 'interets'],
+  },
+  {
+    id: 'projet', label: 'Chef de projet', category: 'Finance & Gestion', icon: '▤',
+    titles: ['Chef de projet', 'Project Manager', 'Product Owner', 'Coordinateur de projet'],
+    skills: ['Gestion de projet', 'Planification', 'MS Project', 'Jira', 'Agile Scrum', 'Gestion des risques', 'Budget', 'Pilotage de prestataires', 'Conduite du changement', 'PMP', 'Prince2', 'Reporting', 'Trello', 'Gestion des parties prenantes'],
+    soft: ['Leadership', 'Communication', 'Organisation', 'Gestion des priorités'],
+    bullets: [
+      'Piloté [X] projets simultanés d’un budget total de [X], livrés dans les délais',
+      'Coordonné une équipe pluridisciplinaire de [X] personnes',
+      'Réduit les dépassements de budget de [X] % grâce à un suivi hebdomadaire des risques',
+      'Livré le projet [nom] [X] semaines avant l’échéance',
+    ],
+    summary: {
+      junior: 'Coordinateur organisé formé à {skills}. Recherche un poste de {title} pour faire avancer des projets concrets.',
+      mid: '{title} avec {years} ans d’expérience en {skills}. Je livre des projets dans les délais et le budget, en fédérant les équipes.',
+      senior: '{title}, {years} ans d’expérience. Je pilote des programmes stratégiques et la conduite du changement ({skills}).',
+    },
+    layout: 'timeline', order: ['profil', 'experience', 'competences', 'certifications', 'formation', 'langues', 'interets'],
+  },
+  {
+    id: 'admin', label: 'Assistant administratif', category: 'Services & Support', icon: '✉',
+    titles: ['Assistant administratif', 'Assistant de direction', 'Office Manager', 'Secrétaire'],
+    skills: ['Gestion d’agenda', 'Accueil', 'Microsoft Office', 'Excel', 'Rédaction de courriers', 'Classement', 'Organisation d’événements', 'Facturation', 'Gestion des achats', 'Google Workspace', 'Saisie de données', 'Standard téléphonique'],
+    soft: ['Organisation', 'Discrétion', 'Polyvalence', 'Sens du service'],
+    bullets: [
+      'Géré l’agenda et les déplacements de [X] dirigeants',
+      'Traité [X] factures par mois sans retard de paiement',
+      'Organisé [X] événements et séminaires pour [X] participants',
+      'Mis en place un classement numérique réduisant le temps de recherche de [X] %',
+    ],
+    summary: {
+      junior: 'Assistant organisé et polyvalent, à l’aise avec {skills}. Recherche un poste de {title}.',
+      mid: '{title} avec {years} ans d’expérience. Je fluidifie le quotidien des équipes grâce à {skills}.',
+      senior: '{title}, {years} ans d’expérience auprès de directions générales. Je pilote l’organisation administrative ({skills}).',
+    },
+    layout: 'classique', order: ['profil', 'experience', 'competences', 'formation', 'langues', 'certifications', 'interets'],
+  },
+  {
+    id: 'service-client', label: 'Service client', category: 'Services & Support', icon: '☏',
+    titles: ['Conseiller clientèle', 'Téléconseiller', 'Chargé de service client', 'Superviseur centre d’appels'],
+    skills: ['Relation client', 'Gestion des réclamations', 'CRM', 'Zendesk', 'Vente additionnelle', 'Appels entrants', 'Appels sortants', 'Chat et email', 'Satisfaction client', 'Résolution de problèmes', 'Bilingue français-anglais'],
+    soft: ['Patience', 'Empathie', 'Gestion du stress', 'Clarté'],
+    bullets: [
+      'Traité en moyenne [X] appels par jour avec un taux de satisfaction de [X] %',
+      'Résolu [X] % des réclamations dès le premier contact',
+      'Généré [X] de ventes additionnelles par mois',
+      'Formé [X] nouveaux conseillers aux outils et aux scripts',
+    ],
+    summary: {
+      junior: 'Conseiller patient et souriant, à l’aise avec {skills}. Recherche un poste de {title}.',
+      mid: '{title} avec {years} ans d’expérience. Je transforme chaque contact en expérience positive grâce à {skills}.',
+      senior: '{title}, {years} ans d’expérience. J’encadre des équipes et améliore la satisfaction client ({skills}).',
+    },
+    layout: 'minimal', order: ['profil', 'experience', 'competences', 'langues', 'formation', 'certifications', 'interets'],
+  },
+  {
+    id: 'logistique', label: 'Logistique & Supply chain', category: 'Industrie & Terrain', icon: '⇄',
+    titles: ['Agent logistique', 'Gestionnaire de stock', 'Responsable logistique', 'Transitaire'],
+    skills: ['Gestion des stocks', 'Approvisionnement', 'Transport', 'Dédouanement', 'Incoterms', 'ERP SAP', 'Inventaires', 'Gestion d’entrepôt', 'Chaîne du froid', 'Planification', 'Excel', 'Lean'],
+    soft: ['Organisation', 'Réactivité', 'Rigueur', 'Esprit d’équipe'],
+    bullets: [
+      'Géré un stock de [X] références d’une valeur de [X] avec un taux d’erreur inférieur à [X] %',
+      'Réduit les délais de livraison de [X] % en réorganisant les tournées',
+      'Traité [X] dossiers de dédouanement par mois',
+      'Diminué les ruptures de stock de [X] % grâce à de nouvelles prévisions',
+    ],
+    summary: {
+      junior: 'Profil organisé formé à {skills}. Recherche un poste de {title} pour fiabiliser les flux.',
+      mid: '{title} avec {years} ans d’expérience en {skills}. Je garantis des flux fiables, rapides et au meilleur coût.',
+      senior: '{title}, {years} ans d’expérience. J’optimise des chaînes logistiques complètes ({skills}).',
+    },
+    layout: 'compact', order: ['profil', 'experience', 'competences', 'formation', 'certifications', 'langues', 'interets'],
+  },
+  {
+    id: 'btp', label: 'Ingénieur BTP / Génie civil', category: 'Industrie & Terrain', icon: '△',
+    titles: ['Ingénieur génie civil', 'Conducteur de travaux', 'Chef de chantier', 'Technicien bureau d’études'],
+    skills: ['Conduite de travaux', 'AutoCAD', 'Revit', 'Métrés', 'Gestion de chantier', 'Béton armé', 'Normes de sécurité', 'Planification', 'Suivi budgétaire', 'Robot Structural', 'Lecture de plans', 'Encadrement d’équipes'],
+    soft: ['Leadership', 'Sens des responsabilités', 'Résistance au stress', 'Rigueur'],
+    bullets: [
+      'Dirigé un chantier de [X] logements d’un budget de [X], livré dans les délais',
+      'Encadré [X] ouvriers et [X] sous-traitants avec zéro accident',
+      'Réduit les coûts de matériaux de [X] % grâce à des métrés précis',
+      'Conçu les plans d’exécution de [X] ouvrages sous AutoCAD',
+    ],
+    summary: {
+      junior: 'Jeune ingénieur en génie civil formé à {skills}. Recherche un poste de {title}.',
+      mid: '{title} avec {years} ans d’expérience. Je mène des chantiers sûrs, dans les délais et le budget ({skills}).',
+      senior: '{title}, {years} ans d’expérience. Je pilote des projets d’infrastructure majeurs ({skills}).',
+    },
+    layout: 'executif', order: ['profil', 'experience', 'competences', 'formation', 'certifications', 'langues', 'interets'],
+  },
+  {
+    id: 'technicien', label: 'Technicien maintenance', category: 'Industrie & Terrain', icon: '⚙',
+    titles: ['Technicien de maintenance', 'Électricien', 'Électromécanicien', 'Technicien froid et climatisation'],
+    skills: ['Maintenance préventive', 'Maintenance curative', 'Électricité industrielle', 'Automatismes', 'Hydraulique', 'Lecture de schémas', 'GMAO', 'Habilitation électrique', 'Diagnostic de pannes', 'Soudure', 'Climatisation', 'Sécurité'],
+    soft: ['Méthode', 'Réactivité', 'Autonomie', 'Prudence'],
+    bullets: [
+      'Réduit les arrêts de production de [X] % grâce à un plan de maintenance préventive',
+      'Assuré la maintenance de [X] équipements sur [X] sites',
+      'Diagnostiqué et réparé en moyenne [X] pannes par semaine',
+      'Formé [X] opérateurs aux règles de sécurité',
+    ],
+    summary: {
+      junior: 'Technicien formé à {skills}, rigoureux et prudent. Recherche un poste de {title}.',
+      mid: '{title} avec {years} ans d’expérience en {skills}. Je maintiens les équipements disponibles et sûrs.',
+      senior: '{title}, {years} ans d’expérience. Je dirige la maintenance et la fiabilité industrielle ({skills}).',
+    },
+    layout: 'compact', order: ['profil', 'competences', 'experience', 'certifications', 'formation', 'langues', 'interets'],
+  },
+  {
+    id: 'chauffeur', label: 'Chauffeur / Livreur', category: 'Industrie & Terrain', icon: '◍',
+    titles: ['Chauffeur poids lourd', 'Chauffeur livreur', 'Chauffeur VTC', 'Chauffeur de direction'],
+    skills: ['Permis B', 'Permis C', 'Permis CE', 'Code de la route', 'Livraison', 'Chargement', 'Entretien du véhicule', 'GPS', 'Ponctualité', 'Gestion des bons de livraison', 'Conduite économique', 'Premiers secours'],
+    soft: ['Ponctualité', 'Courtoisie', 'Prudence', 'Sens de l’orientation'],
+    bullets: [
+      'Effectué [X] livraisons par jour avec un taux de ponctualité de [X] %',
+      'Parcouru [X] km sans accident ni infraction',
+      'Réduit la consommation de carburant de [X] % grâce à l’éco-conduite',
+    ],
+    summary: {
+      junior: 'Chauffeur ponctuel et prudent, titulaire du {skills}. Recherche un poste de {title}.',
+      mid: '{title} avec {years} ans d’expérience, zéro accident. Fiable, ponctuel et courtois.',
+      senior: '{title}, {years} ans d’expérience. Expert de la sécurité routière et de la relation client.',
+    },
+    layout: 'minimal', order: ['profil', 'competences', 'experience', 'formation', 'langues', 'certifications', 'interets'],
+  },
+  {
+    id: 'sante', label: 'Infirmier / Santé', category: 'Santé & Social', icon: '+',
+    titles: ['Infirmier diplômé d’État', 'Aide-soignant', 'Sage-femme', 'Infirmier de bloc'],
+    skills: ['Soins infirmiers', 'Administration des médicaments', 'Prise de constantes', 'Dossier patient informatisé', 'Hygiène hospitalière', 'Urgences', 'Pansements', 'Éducation thérapeutique', 'Gestes d’urgence', 'Pédiatrie', 'Gériatrie', 'Protocoles de soins'],
+    soft: ['Empathie', 'Sang-froid', 'Vigilance', 'Travail en équipe'],
+    bullets: [
+      'Assuré la prise en charge de [X] patients par jour en service de [service]',
+      'Participé à la réduction des infections nosocomiales de [X] %',
+      'Formé [X] étudiants infirmiers aux protocoles du service',
+      'Mené [X] séances d’éducation thérapeutique auprès des patients diabétiques',
+    ],
+    summary: {
+      junior: 'Infirmier diplômé, formé à {skills}. Recherche un poste de {title} pour offrir des soins sûrs et humains.',
+      mid: '{title} avec {years} ans d’expérience en {skills}. J’allie technicité des soins et écoute des patients.',
+      senior: '{title}, {years} ans d’expérience. J’encadre des équipes soignantes et améliore la qualité des soins ({skills}).',
+    },
+    layout: 'sante', order: ['profil', 'experience', 'formation', 'competences', 'certifications', 'langues', 'interets'],
+  },
+  {
+    id: 'enseignant', label: 'Enseignant / Formateur', category: 'Santé & Social', icon: '✎',
+    titles: ['Professeur', 'Enseignant', 'Formateur', 'Professeur de mathématiques'],
+    skills: ['Pédagogie', 'Préparation de cours', 'Gestion de classe', 'Évaluation', 'Différenciation pédagogique', 'Outils numériques', 'Google Classroom', 'Ingénierie de formation', 'Tutorat', 'Programmes officiels'],
+    soft: ['Patience', 'Bienveillance', 'Clarté', 'Créativité'],
+    bullets: [
+      'Enseigné à [X] classes de [X] élèves avec un taux de réussite aux examens de [X] %',
+      'Conçu [X] modules de formation suivis par [X] apprenants',
+      'Mis en place un tutorat qui a amélioré les résultats de [X] %',
+    ],
+    summary: {
+      junior: 'Jeune enseignant formé à {skills}. Recherche un poste de {title} pour faire progresser chaque élève.',
+      mid: '{title} avec {years} ans d’expérience. J’adapte mes méthodes pour faire réussir tous les élèves ({skills}).',
+      senior: '{title}, {years} ans d’expérience. Je coordonne des équipes pédagogiques et conçois des programmes ({skills}).',
+    },
+    layout: 'academique', order: ['profil', 'experience', 'formation', 'competences', 'certifications', 'langues', 'interets'],
+  },
+  {
+    id: 'ong', label: 'ONG & Humanitaire', category: 'Santé & Social', icon: '◇',
+    titles: ['Chargé de programme', 'Coordinateur de projet humanitaire', 'Chargé de suivi-évaluation', 'Travailleur social'],
+    skills: ['Gestion de cycle de projet', 'Suivi-évaluation', 'Cadre logique', 'Rédaction de rapports bailleurs', 'Gestion de subventions', 'Mobilisation communautaire', 'KoboToolbox', 'Plaidoyer', 'Protection', 'Partenariats', 'Budget'],
+    soft: ['Adaptabilité', 'Engagement', 'Sensibilité interculturelle', 'Résilience'],
+    bullets: [
+      'Coordonné un projet de [X] financé par [bailleur] au bénéfice de [X] personnes',
+      'Rédigé [X] rapports et propositions, dont [X] financées',
+      'Mis en place un système de suivi-évaluation couvrant [X] indicateurs',
+      'Formé [X] relais communautaires dans [X] localités',
+    ],
+    summary: {
+      junior: 'Profil engagé, formé à {skills}. Recherche un poste de {title} au service des communautés.',
+      mid: '{title} avec {years} ans d’expérience en {skills}. Je conduis des projets à impact mesurable.',
+      senior: '{title}, {years} ans d’expérience. Je dirige des programmes multi-bailleurs et des équipes terrain ({skills}).',
+    },
+    layout: 'timeline', order: ['profil', 'experience', 'competences', 'formation', 'langues', 'certifications', 'interets'],
+  },
+  {
+    id: 'hotellerie', label: 'Hôtellerie & Restauration', category: 'Services & Support', icon: '◓',
+    titles: ['Réceptionniste', 'Serveur', 'Chef de cuisine', 'Responsable de salle'],
+    skills: ['Accueil client', 'Réservations', 'Encaissement', 'Hygiène HACCP', 'Service en salle', 'Cuisine', 'Gestion des stocks', 'Opera PMS', 'Gestion des plaintes', 'Langues étrangères', 'Mise en place', 'Vente additionnelle'],
+    soft: ['Sourire', 'Endurance', 'Réactivité', 'Esprit d’équipe'],
+    bullets: [
+      'Accueilli jusqu’à [X] clients par jour avec une note moyenne de [X]/5',
+      'Augmenté le ticket moyen de [X] % grâce à la vente additionnelle',
+      'Géré [X] réservations par semaine sans surréservation',
+      'Réduit le gaspillage alimentaire de [X] %',
+    ],
+    summary: {
+      junior: 'Souriant et dynamique, formé à {skills}. Recherche un poste de {title}.',
+      mid: '{title} avec {years} ans d’expérience. Je crée des expériences clients mémorables ({skills}).',
+      senior: '{title}, {years} ans d’expérience. Je dirige des équipes et maximise la satisfaction et la rentabilité ({skills}).',
+    },
+    layout: 'bandeau', order: ['profil', 'experience', 'competences', 'langues', 'formation', 'certifications', 'interets'],
+  },
+  {
+    id: 'design', label: 'Designer graphique / UX', category: 'Création', icon: '✦',
+    titles: ['Designer graphique', 'UX/UI Designer', 'Directeur artistique', 'Motion designer'],
+    skills: ['Figma', 'Adobe Photoshop', 'Adobe Illustrator', 'InDesign', 'UX Research', 'Prototypage', 'Design system', 'Identité visuelle', 'Typographie', 'After Effects', 'Wireframes', 'Accessibilité'],
+    soft: ['Créativité', 'Empathie utilisateur', 'Écoute', 'Souci du détail'],
+    bullets: [
+      'Conçu l’identité visuelle de [X] marques, dont [nom]',
+      'Repensé le parcours d’inscription, augmentant le taux de conversion de [X] %',
+      'Créé un design system de [X] composants utilisé par [X] équipes',
+      'Mené [X] tests utilisateurs pour valider les maquettes',
+    ],
+    summary: {
+      junior: 'Designer créatif formé à {skills}. Recherche un poste de {title}. Portfolio disponible en lien.',
+      mid: '{title} avec {years} ans d’expérience. Je conçois des interfaces et des marques utiles et belles ({skills}).',
+      senior: '{title}, {years} ans d’expérience. Je dirige la création et les design systems de produits ({skills}).',
+    },
+    layout: 'bandeau', order: ['profil', 'experience', 'competences', 'formation', 'langues', 'certifications', 'interets'],
+  },
+  {
+    id: 'juridique', label: 'Juriste', category: 'Finance & Gestion', icon: '§',
+    titles: ['Juriste d’entreprise', 'Juriste en droit des affaires', 'Assistant juridique', 'Avocat'],
+    skills: ['Droit des affaires', 'Droit OHADA', 'Rédaction de contrats', 'Veille juridique', 'Contentieux', 'Droit du travail', 'Conformité', 'Propriété intellectuelle', 'Secrétariat juridique', 'RGPD', 'Négociation'],
+    soft: ['Rigueur', 'Esprit de synthèse', 'Discrétion', 'Argumentation'],
+    bullets: [
+      'Rédigé et négocié [X] contrats commerciaux par an',
+      'Géré [X] dossiers contentieux avec [X] % d’issues favorables',
+      'Mis en conformité [X] filiales avec la réglementation [nom]',
+    ],
+    summary: {
+      junior: 'Juriste formé en {skills}. Recherche un poste de {title} pour sécuriser les activités de l’entreprise.',
+      mid: '{title} avec {years} ans d’expérience en {skills}. Je sécurise les décisions et les contrats.',
+      senior: '{title}, {years} ans d’expérience. Je dirige les affaires juridiques et la conformité ({skills}).',
+    },
+    layout: 'executif', order: ['profil', 'experience', 'formation', 'competences', 'langues', 'certifications', 'interets'],
+  },
+  {
+    id: 'etudiant', label: 'Étudiant / Premier emploi', category: 'Débuter', icon: '★',
+    titles: ['Stagiaire', 'Alternant', 'Assistant junior', 'Jeune diplômé'],
+    skills: ['Microsoft Office', 'Excel', 'Recherche documentaire', 'Rédaction', 'Travail en équipe', 'Réseaux sociaux', 'Gestion de projet', 'Présentation orale', 'Anglais', 'Google Workspace'],
+    soft: ['Motivation', 'Curiosité', 'Capacité d’apprentissage', 'Ponctualité'],
+    bullets: [
+      'Réalisé un projet de fin d’études sur [sujet], noté [X]/20',
+      'Organisé un événement étudiant réunissant [X] participants',
+      'Assisté l’équipe [service] dans le traitement de [X] dossiers pendant mon stage',
+      'Encadré [X] élèves en soutien scolaire bénévole',
+    ],
+    summary: {
+      junior: 'Étudiant motivé en {field}, à l’aise avec {skills}. Je recherche un {title} pour mettre en pratique mes connaissances et apprendre vite.',
+      mid: 'Jeune diplômé en {field}, avec des expériences de stage et associatives. Je recherche un poste de {title}.',
+      senior: 'Jeune diplômé en {field}, avec des expériences de stage et associatives. Je recherche un poste de {title}.',
+    },
+    layout: 'academique', order: ['profil', 'formation', 'experience', 'competences', 'langues', 'certifications', 'interets'],
+  },
+];
+
+export const ACTION_VERBS = [
+  'accompagné', 'accru', 'amélioré', 'analysé', 'animé', 'assuré', 'atteint', 'augmenté', 'automatisé', 'bâti', 'collaboré',
+  'conçu', 'conduit', 'construit', 'contribué', 'coordonné', 'créé', 'déployé', 'développé', 'diminué', 'dirigé', 'diagnostiqué',
+  'économisé', 'effectué', 'encadré', 'enseigné', 'établi', 'fait', 'fiabilisé', 'formé', 'généré', 'géré', 'identifié',
+  'implémenté', 'initié', 'lancé', 'livré', 'mené', 'migré', 'mis', 'modernisé', 'négocié', 'optimisé', 'organisé', 'parcouru',
+  'participé', 'piloté', 'planifié', 'préparé', 'produit', 'recruté', 'rédigé', 'réalisé', 'réduit', 'refondu', 'remporté',
+  'renforcé', 'repensé', 'résolu', 'restructuré', 'sécurisé', 'signé', 'simplifié', 'structuré', 'supervisé', 'tenu', 'traité',
+  'transformé', 'accueilli', 'administré', 'classé', 'dépassé', 'écrit', 'enseigné', 'facilité', 'gagné', 'obtenu', 'ouvert',
+  'pris', 'proposé', 'remplacé', 'soutenu', 'suivi', 'testé', 'unifié', 'validé', 'vendu',
+  // anglais
+  'led', 'built', 'managed', 'developed', 'increased', 'reduced', 'created', 'designed', 'launched', 'delivered', 'improved',
+];
+
+export const LEVELS = [
+  { id: 'junior', label: 'Je débute', hint: 'Moins de 2 ans, stage, alternance ou premier emploi' },
+  { id: 'mid', label: 'Confirmé', hint: '2 à 8 ans d’expérience' },
+  { id: 'senior', label: 'Expert / Manager', hint: 'Plus de 8 ans ou encadrement d’équipe' },
+];
+
+export const LANG_LEVELS = ['Langue maternelle', 'Courant C1-C2', 'Avancé B2', 'Intermédiaire B1', 'Notions A1-A2'];
+
+export function getJob(id) {
+  return JOBS.find((j) => j.id === id) || null;
+}
