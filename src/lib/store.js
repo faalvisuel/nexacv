@@ -20,6 +20,8 @@ export const emptyCV = () => ({
   interests: '',
   template: '',
   offer: '',
+  photo: '',
+  showPhoto: true,
   step: 0,
 });
 
@@ -52,7 +54,8 @@ export const sampleCV = () => ({
   ],
   certifications: [{ id: uid(), name: 'Google Ads Search', issuer: 'Google', year: '2023' }],
   interests: 'Photographie, bénévolat associatif',
-  template: 'moderne.encre.carlito',
+  template: 'grenat.bordeaux.poppins',
+  photo: './photo-1.jpg',
 });
 
 export function useCV() {

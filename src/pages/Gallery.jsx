@@ -9,13 +9,14 @@ const PAGE = 24;
 export default function Gallery({ cv, setCv, go }) {
   const [jobId, setJobId] = useState(cv.jobId || '');
   const [layout, setLayout] = useState('');
+  const [family, setFamily] = useState('');
   const [palette, setPalette] = useState('');
   const [font, setFont] = useState('');
   const [shown, setShown] = useState(PAGE);
   const demo = useMemo(() => (hasData(cv) && cv.personal.firstName ? cv : sampleCV()), [cv]);
 
   const list = useMemo(() => templatesFor(jobId).filter((t) =>
-    (!layout || t.layout.id === layout) && (!palette || t.palette.id === palette) && (!font || t.font.id === font)), [jobId, layout, palette, font]);
+    (!family || t.layout.family === family) && (!layout || t.layout.id === layout) && (!palette || t.palette.id === palette) && (!font || t.font.id === font)), [jobId, family, layout, palette, font]);
 
   const use = (id) => {
     setCv((c) => ({ ...c, template: id, jobId: c.jobId || jobId }));
@@ -35,6 +36,13 @@ export default function Gallery({ cv, setCv, go }) {
           <select value={jobId} onChange={reset(setJobId)}>
             <option value="">Tous les métiers</option>
             {JOBS.map((j) => <option key={j.id} value={j.id}>{j.label}</option>)}
+          </select>
+        </label>
+        <label className="field"><span className="field-label">Style</span>
+          <select value={family} onChange={reset(setFamily)}>
+            <option value="">Tous</option>
+            <option value="design">Design (photo, couleurs)</option>
+            <option value="essentiel">Essentiel (ATS strict)</option>
           </select>
         </label>
         <label className="field"><span className="field-label">Mise en page</span>
@@ -62,6 +70,7 @@ export default function Gallery({ cv, setCv, go }) {
         {list.slice(0, shown).map((t) => (
           <figure className="g-card" key={t.id}>
             <button type="button" className="g-thumb" onClick={() => use(t.id)} aria-label={`Utiliser le modèle ${t.layout.name} ${t.palette.name} ${t.font.name}`}>
+              <span className={`g-badge${t.layout.family === 'design' ? '' : ' ess'}`}>{t.layout.family === 'design' ? 'Design' : 'ATS strict'}</span>
               <ScaledCV cv={demo} templateId={t.id} clip />
               <span className="g-use">Utiliser ce modèle</span>
             </button>

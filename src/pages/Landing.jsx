@@ -18,7 +18,7 @@ const STEPS = [
   { t: 'Formation et certifications', tags: ['Diplôme le plus élevé', 'Mentions', 'Certifications'], d: 'Du plus récent au plus ancien, sans remonter avant le baccalauréat.' },
   { t: 'Compétences et langues', tags: ['Mots-clés ATS', 'Qualités', 'Niveaux CECRL'], d: 'Un clic sur les compétences que les recruteurs de votre secteur recherchent. Ajoutez les vôtres en une frappe.' },
   { t: 'Votre profil', tags: ['Texte proposé', '3 phrases', 'Personnalisable'], d: 'On rédige une proposition à partir de vos réponses. Vous l’ajustez avec une réussite concrète.' },
-  { t: 'Modèle, offre et téléchargement', tags: ['1 344 modèles', 'Analyse de l’offre', 'PDF, Word, texte'], d: 'Collez l’annonce : les mots-clés trouvés sont surlignés, ceux qui manquent s’ajoutent d’un clic. Puis téléchargez.' },
+  { t: 'Modèle, offre et téléchargement', tags: [`${TEMPLATE_COUNT.toLocaleString('fr-FR')} modèles`, 'Analyse de l’offre', 'PDF, Word, texte'], d: 'Collez l’annonce : les mots-clés trouvés sont surlignés, ceux qui manquent s’ajoutent d’un clic. Puis téléchargez.' },
 ];
 
 export default function Landing({ go, cv, startSample }) {
@@ -26,15 +26,15 @@ export default function Landing({ go, cv, startSample }) {
   const [open, setOpen] = useState(2);
   const resume = hasData(cv);
   const arc = [
-    { id: 'photo-2.jpg' },
-    { id: 'elegant.or.garamond', tag: 'Juriste', gold: true },
-    { id: 'photo-1.jpg' },
-    { id: 'bandeau.bordeaux.lato', tag: 'Score ATS 96' },
-    { id: 'impact.bordeaux.opensans', tag: 'Marketing', gold: true },
-    { id: 'photo-3.jpg' },
-    { id: 'timeline.emeraude.sourcesans', tag: 'Chef de projet' },
+    { id: 'ardoise.or.poppins', tag: 'Finance', photo: './photo-4.jpg' },
+    { id: 'sable.or.opensans', tag: 'Comptable', gold: true, photo: './photo-2.jpg' },
+    { id: 'orbite.teranga.poppins', tag: 'Logistique', photo: './photo-3.jpg' },
+    { id: 'grenat.bordeaux.poppins', tag: 'Score ATS 96', photo: './photo-1.jpg' },
+    { id: 'bonjour.cobalt.poppins', tag: 'Designer', gold: true, photo: './photo-2.jpg' },
+    { id: 'pop.prune.poppins', tag: 'Créatif', photo: './photo-3.jpg' },
+    { id: 'executif.bordeaux.georgia', tag: 'ATS strict', gold: true },
   ];
-  const strip = ['moderne.bordeaux.lato', 'classique.encre.georgia', 'bandeau.or.opensans', 'timeline.emeraude.sourcesans', 'impact.bordeaux.roboto', 'elegant.or.garamond'];
+  const strip = ['grenat.bordeaux.poppins', 'sable.or.opensans', 'orbite.teranga.poppins', 'bonjour.cobalt.poppins', 'ardoise.emeraude.poppins', 'pop.prune.poppins'];
   const marquee = [...JOBS, ...JOBS].map((j) => j.label);
 
   return (
@@ -57,9 +57,9 @@ export default function Landing({ go, cv, startSample }) {
             <path d="M120 600 A480 480 0 0 1 1080 600" stroke="currentColor" strokeWidth="1" opacity=".6" />
           </svg>
           {arc.map((c, i) => (
-            <div className={`arc-card${c.id.endsWith('.jpg') ? ' is-photo' : ''}`} key={c.id} style={{ '--i': i - 3, '--a': Math.abs(i - 3) }}>
+            <div className="arc-card" key={c.id} style={{ '--i': i - 3, '--a': Math.abs(i - 3) }}>
               {c.tag && <span className={`arc-tag${c.gold ? ' gold' : ''}`}>{c.tag}</span>}
-              {c.id.endsWith('.jpg') ? <img src={`./${c.id}`} alt="" loading="eager" /> : <ScaledCV cv={demo} templateId={c.id} clip />}
+              <ScaledCV cv={c.photo ? { ...demo, photo: c.photo } : demo} templateId={c.id} clip />
             </div>
           ))}
           <div className="float float-score"><ScoreRing score={96} size={46} /><span><strong>Score ATS</strong><br />Excellent</span></div>
@@ -146,7 +146,7 @@ export default function Landing({ go, cv, startSample }) {
         </div>
         <div className="bento">
           <article className="b-card b-dark">
-            <div className="b-sheet"><ScaledCV cv={demo} templateId="bandeau.or.lato" clip /></div>
+            <div className="b-sheet"><ScaledCV cv={demo} templateId="sable.or.opensans" clip /></div>
             <div className="b-text">
               <h3>Un aperçu qui se remplit pendant que vous écrivez</h3>
               <p>Chaque réponse apparaît aussitôt sur la feuille A4, dans le modèle choisi.</p>
@@ -183,7 +183,7 @@ export default function Landing({ go, cv, startSample }) {
             <div>
               <p className="tag-pill small-pill on-dark"><span className="tag-dot" aria-hidden="true" />Modèles</p>
               <h2 className="h2">{TEMPLATE_COUNT.toLocaleString('fr-FR')} modèles, classés par métier</h2>
-              <p className="on-ink-muted">12 mises en page, 14 couleurs, 8 polices. Sobres pour la finance et le droit, plus affirmés pour la création et le commerce.</p>
+              <p className="on-ink-muted">6 modèles Design avec photo et 12 modèles Essentiel « ATS strict », en 14 couleurs et 9 polices. Affirmés pour la création et le commerce, sobres pour la finance et les grands groupes.</p>
             </div>
             <button type="button" className="btn btn-accent btn-pill" onClick={() => go('modeles')}>Parcourir les modèles<Arrow /></button>
           </div>

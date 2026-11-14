@@ -1,10 +1,19 @@
-// Système de modèles : 12 mises en page × 14 couleurs × 8 typographies = 1 344 modèles.
+// Système de modèles : 18 mises en page (6 Design + 12 Essentiel) × 14 couleurs × 9 polices.
 // Toutes les mises en page respectent les règles ATS : une seule colonne de lecture,
 // texte réel (pas d'image), titres de sections standards, pas de tableau de structure,
 // pas de photo, polices système ou très répandues.
 import { JOBS } from './jobs.js';
 
-export const LAYOUTS = [
+export const DESIGN_LAYOUTS = [
+  { id: 'grenat', name: 'Grenat', family: 'design', desc: 'Nom massif, colonne pleine couleur, bannière profil et anneaux de langues.' },
+  { id: 'sable', name: 'Sable', family: 'design', desc: 'Bandeau supérieur, plaque nom sous la photo, colonne latérale teintée.' },
+  { id: 'orbite', name: 'Orbite', family: 'design', desc: 'Barre latérale sombre, photo ronde, titres en pilule et frise chronologique.' },
+  { id: 'bonjour', name: 'Bonjour', family: 'design', desc: 'Fond crème, accroche manuscrite, dates en marge, coins décoratifs.' },
+  { id: 'ardoise', name: 'Ardoise', family: 'design', desc: 'Barre latérale ardoise avec grande photo, mise en page éditoriale.' },
+  { id: 'pop', name: 'Pop', family: 'design', desc: 'Arche photo, étincelles, titres pilules pastel. Pour les métiers créatifs.' },
+];
+
+const ESSENTIAL_LAYOUTS = [
   { id: 'classique', name: 'Classique', desc: 'Nom centré, filets fins. Le choix sûr pour tous les secteurs.' },
   { id: 'moderne', name: 'Moderne', desc: 'Nom en couleur, titres de section soulignés d’un trait.' },
   { id: 'executif', name: 'Exécutif', desc: 'Sobre et dense, pour la finance, le droit et la direction.' },
@@ -17,7 +26,10 @@ export const LAYOUTS = [
   { id: 'timeline', name: 'Chronologie', desc: 'Dates en marge gauche, parcours lisible d’un coup d’œil.' },
   { id: 'sante', name: 'Clair', desc: 'Titres sur fond teinté léger, très aéré.' },
   { id: 'impact', name: 'Impact', desc: 'Titre de poste en grand, pour se positionner tout de suite.' },
-];
+].map((l) => ({ ...l, family: 'essentiel' }));
+
+export const LAYOUTS = [...DESIGN_LAYOUTS, ...ESSENTIAL_LAYOUTS];
+export const isDesign = (layoutId) => DESIGN_LAYOUTS.some((l) => l.id === layoutId);
 
 export const PALETTES = [
   { id: 'encre', name: 'Encre', color: '#1B2A4A' },
@@ -37,6 +49,7 @@ export const PALETTES = [
 ];
 
 export const FONTS = [
+  { id: 'poppins', name: 'Poppins', css: "'Poppins', Arial, sans-serif", docx: 'Poppins' },
   { id: 'carlito', name: 'Calibri', css: "'Carlito', Calibri, Arial, sans-serif", docx: 'Calibri' },
   { id: 'arial', name: 'Arial', css: 'Arial, Helvetica, sans-serif', docx: 'Arial' },
   { id: 'lato', name: 'Lato', css: "'Lato', Arial, sans-serif", docx: 'Lato' },
@@ -73,14 +86,14 @@ function seeded(n) {
 
 // Recommandations par métier : chaque métier a ses mises en page préférées.
 const AFFINITY = {
-  'Tech & Data': ['tech', 'moderne', 'compact', 'minimal', 'impact'],
-  'Commerce & Marketing': ['moderne', 'impact', 'bandeau', 'timeline', 'classique'],
-  'Finance & Gestion': ['executif', 'classique', 'elegant', 'compact', 'timeline'],
-  'Santé & Social': ['sante', 'classique', 'timeline', 'minimal', 'academique'],
-  'Industrie & Terrain': ['compact', 'classique', 'executif', 'minimal', 'timeline'],
-  'Services & Support': ['minimal', 'classique', 'bandeau', 'moderne', 'sante'],
-  Création: ['bandeau', 'impact', 'elegant', 'moderne', 'minimal'],
-  Débuter: ['academique', 'minimal', 'moderne', 'classique', 'sante'],
+  'Tech & Data': ['orbite', 'ardoise', 'grenat', 'tech', 'moderne', 'compact'],
+  'Commerce & Marketing': ['grenat', 'orbite', 'bonjour', 'moderne', 'impact', 'bandeau'],
+  'Finance & Gestion': ['ardoise', 'sable', 'grenat', 'executif', 'classique', 'elegant'],
+  'Santé & Social': ['sable', 'bonjour', 'orbite', 'sante', 'classique', 'timeline'],
+  'Industrie & Terrain': ['orbite', 'ardoise', 'sable', 'compact', 'classique', 'executif'],
+  'Services & Support': ['sable', 'orbite', 'bonjour', 'minimal', 'classique', 'bandeau'],
+  Création: ['pop', 'bonjour', 'grenat', 'bandeau', 'impact', 'elegant'],
+  Débuter: ['sable', 'pop', 'bonjour', 'academique', 'minimal', 'moderne'],
 };
 
 export function allTemplates() {
@@ -96,9 +109,8 @@ export function allTemplates() {
 export function templatesFor(categoryOrJobId) {
   const job = JOBS.find((j) => j.id === categoryOrJobId);
   const cat = job ? job.category : categoryOrJobId;
-  const pref = (cat && AFFINITY[cat]) ? [...AFFINITY[cat]] : [];
-  if (job && !pref.includes(job.layout)) pref.unshift(job.layout);
-  if (job) { pref.splice(pref.indexOf(job.layout), 1); pref.unshift(job.layout); }
+  const pref = (cat && AFFINITY[cat]) ? [...AFFINITY[cat]] : DESIGN_LAYOUTS.map((l) => l.id);
+  if (job && !pref.includes(job.layout)) pref.push(job.layout);
   const order = [...pref, ...LAYOUTS.map((l) => l.id).filter((id) => !pref.includes(id))];
   const r = seeded((cat ? cat.length * 31 : 7) + (job ? job.id.length : 0));
   // chaque mise en page : ses variantes couleur × police, mélangées de façon stable

@@ -1,5 +1,6 @@
 import { parseTemplate } from '../data/templates.js';
 import { getJob } from '../data/jobs.js';
+import DesignCV from './DesignCV.jsx';
 
 export const SECTION_TITLES = {
   profil: 'Profil',
@@ -30,6 +31,7 @@ export default function CVRender({ cv, templateId, placeholder = false }) {
   const L = t.layout.id;
 
   const style = { '--cv-accent': t.palette.color, '--cv-font': t.font.css };
+  if (t.layout.family === 'design') return <DesignCV cv={cv} layout={L} style={style} />;
 
   const sections = {
     profil: cv.summary && <p className="cv-summary">{cv.summary}</p>,

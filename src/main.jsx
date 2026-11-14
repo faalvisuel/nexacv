@@ -8,6 +8,7 @@ import { getJob } from './data/jobs.js';
 import { templateId } from './data/templates.js';
 import './styles.css';
 import './cv.css';
+import './cv-design.css';
 
 const route = () => (window.location.hash.replace(/^#\/?/, '') || 'accueil').split('?')[0];
 

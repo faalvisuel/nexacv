@@ -10,7 +10,7 @@ Créateur de CV compatibles ATS, en français, étape par étape.
 - **22 métiers pré-configurés** : compétences suggérées, exemples de réalisations à chiffrer, profil généré automatiquement.
 - **Score ATS en direct** : coordonnées, titre de poste, verbes d'action, résultats chiffrés, dates, longueur, mots-clés.
 - **Analyse d'offre** : on colle l'annonce, le site surligne les mots-clés présents et propose ceux qui manquent.
-- **1 344 modèles** : 12 mises en page × 14 couleurs × 8 polices, triés par métier. Tous en une colonne de lecture, avec du vrai texte.
+- **2 268 modèles** : 18 mises en page (6 « Design » avec photo et 2 colonnes, 12 « Essentiel » ATS strict) × 14 couleurs × 9 polices, triés par métier. Toujours du vrai texte, jamais d'image de texte.
 - **Export** PDF (texte natif), Word (.docx) et texte brut.
 - **Aucune donnée envoyée** : tout est stocké dans le navigateur (localStorage).
 

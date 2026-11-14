@@ -14,6 +14,22 @@ const order = (cv) => (getJob(cv.jobId)?.order) || Object.keys(SECTION_TITLES);
 
 // PDF : impression navigateur → PDF texte natif, 100 % lisible par les ATS
 export function exportPDF(cv) {
+  // Modèles Design : si le contenu dépasse une page, on le réduit légèrement pour garder une page nette.
+  const sheet = document.querySelector('.sheet-frame .cv');
+  const root = document.querySelector('.print-root');
+  if (root) { root.style.zoom = ''; root.style.removeProperty('--pz'); }
+  if (sheet && root && sheet.classList.contains('cv-design')) {
+    const keep = [sheet.style.minHeight, sheet.style.overflow];
+    sheet.style.minHeight = '0';
+    sheet.style.overflow = 'visible';
+    const h = sheet.offsetHeight;
+    [sheet.style.minHeight, sheet.style.overflow] = keep;
+    if (h > 1110) {
+      const z = Math.max(0.78, 1105 / h);
+      root.style.zoom = String(z);
+      root.style.setProperty('--pz', String(z));
+    }
+  }
   const prev = document.title;
   document.title = fileBase(cv);
   document.body.classList.add('printing');

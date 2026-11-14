@@ -1,6 +1,6 @@
 import { useMemo, useState } from 'react';
 import { JOBS, CATEGORIES, LEVELS, LANG_LEVELS, getJob } from '../data/jobs.js';
-import { LAYOUTS, PALETTES, FONTS, parseTemplate, templateId, templatesFor } from '../data/templates.js';
+import { LAYOUTS, PALETTES, FONTS, TEMPLATE_COUNT, parseTemplate, templateId, templatesFor, isDesign } from '../data/templates.js';
 import { analyze, startsWithVerb, hasNumber } from '../lib/ats.js';
 import { uid, emptyCV, sampleCV } from '../lib/store.js';
 import { exportPDF, exportDOCX, exportTXT } from '../lib/export.js';
@@ -114,6 +114,23 @@ function BulletEditor({ value, onChange, suggestions }) {
   );
 }
 
+function readPhoto(file, cb) {
+  const reader = new FileReader();
+  reader.onload = () => {
+    const img = new Image();
+    img.onload = () => {
+      const max = 520;
+      const r = Math.min(1, max / Math.max(img.width, img.height));
+      const c = document.createElement('canvas');
+      c.width = Math.round(img.width * r); c.height = Math.round(img.height * r);
+      c.getContext('2d').drawImage(img, 0, 0, c.width, c.height);
+      cb(c.toDataURL('image/jpeg', 0.82));
+    };
+    img.src = reader.result;
+  };
+  reader.readAsDataURL(file);
+}
+
 function fillSummary(cv) {
   const job = getJob(cv.jobId);
   if (!job) return '';
@@ -156,7 +173,7 @@ export default function Builder({ cv, setCv, go }) {
     setCv((c) => ({
       ...c,
       jobId: j.id,
-      template: c.template || templateId(j.layout, 'bordeaux', 'carlito'),
+      template: c.template || templatesFor(j.id)[0].id.replace(/\.[^.]+\.[^.]+$/, '.bordeaux.poppins'),
       personal: { ...c.personal, title: c.personal.title || j.titles[0] },
     }));
     setTimeout(() => document.getElementById('level-title')?.scrollIntoView({ behavior: 'smooth', block: 'start' }), 50);
@@ -169,14 +186,15 @@ export default function Builder({ cv, setCv, go }) {
   });
 
   const t = parseTemplate(cv.template || (job ? templateId(job.layout, 'bordeaux', 'carlito') : ''));
+  const [family, setFamily] = useState(isDesign(t.layout.id) ? 'design' : 'essentiel');
   const recommended = useMemo(() => {
     const seen = new Set();
     return templatesFor(cv.jobId).filter((x) => {
       const k = x.layout.id;
-      if (seen.has(k)) return false;
+      if (x.layout.family !== family || seen.has(k)) return false;
       seen.add(k); return true;
     }).slice(0, 6);
-  }, [cv.jobId]);
+  }, [cv.jobId, family]);
 
   const doExport = async (kind) => {
     setBusy(kind);
@@ -250,6 +268,21 @@ export default function Builder({ cv, setCv, go }) {
               <Field label="Ville, pays"><input autoComplete="address-level2" value={cv.personal.city} onChange={(e) => upP('city', e.target.value)} placeholder="Dakar, Sénégal" /></Field>
               <Field label="LinkedIn (facultatif)"><input value={cv.personal.linkedin} onChange={(e) => upP('linkedin', e.target.value)} placeholder="linkedin.com/in/votre-nom" /></Field>
               <Field label="Site ou portfolio (facultatif)" wide><input value={cv.personal.website} onChange={(e) => upP('website', e.target.value)} placeholder="votresite.com" /></Field>
+            </div>
+            <div className="photo-field">
+              <div className="photo-prev">{cv.photo ? <img src={cv.photo} alt="Votre photo" /> : <span aria-hidden="true">{(cv.personal.firstName || '?')[0]}</span>}</div>
+              <div>
+                <span className="field-label">Photo (facultatif)</span>
+                <p className="field-hint">Utilisée par les modèles Design. Photo de face, fond neutre, tenue professionnelle. À éviter pour les candidatures dans les grands groupes internationaux.</p>
+                <div className="photo-actions">
+                  <label className="btn btn-ghost btn-sm">
+                    {cv.photo ? 'Changer la photo' : 'Ajouter une photo'}
+                    <input type="file" accept="image/*" className="sr-only" onChange={(e) => { const f = e.target.files && e.target.files[0]; if (f) readPhoto(f, (url) => up({ photo: url, showPhoto: true })); }} />
+                  </label>
+                  {cv.photo && <button type="button" className="link-btn" onClick={() => up({ photo: '' })}>Retirer</button>}
+                  {cv.photo && <label className="check inline-check"><input type="checkbox" checked={cv.showPhoto !== false} onChange={(e) => up({ showPhoto: e.target.checked })} /> Afficher sur le CV</label>}
+                </div>
+              </div>
             </div>
           </>
         );
@@ -367,13 +400,19 @@ export default function Builder({ cv, setCv, go }) {
         return (
           <>
             <h2 className="step-title">Choisissez un modèle et téléchargez</h2>
-            <p className="step-lead">Tous nos modèles sont lisibles par les ATS : une colonne de lecture, du vrai texte, des titres standards.</p>
+            <div className="family-tabs" role="tablist" aria-label="Style de modèle">
+              <button type="button" role="tab" aria-selected={family === 'design'} className={family === 'design' ? 'is-on' : ''} onClick={() => setFamily('design')}><strong>Design</strong><span>Photo, couleurs, deux colonnes</span></button>
+              <button type="button" role="tab" aria-selected={family === 'essentiel'} className={family === 'essentiel' ? 'is-on' : ''} onClick={() => setFamily('essentiel')}><strong>Essentiel</strong><span>Une colonne, ATS strict</span></button>
+            </div>
+            <p className="step-lead small">{family === 'design'
+              ? 'Pour les PME, start-up, ONG et candidatures directes. Le texte reste sélectionnable et lisible par la plupart des ATS modernes.'
+              : 'Pour les grands groupes et les plateformes de recrutement : la lecture la plus fiable par les logiciels de tri.'}</p>
             <div className="tpl-mini-grid">
               {recommended.map((r) => {
                 const id = templateId(r.layout.id, t.palette.id, t.font.id);
                 return (
                   <button type="button" key={r.layout.id} className={`tpl-mini${t.layout.id === r.layout.id ? ' is-on' : ''}`} onClick={() => up({ template: id })} aria-pressed={t.layout.id === r.layout.id}>
-                    <ScaledCV cv={cv.personal.firstName ? cv : sampleCV()} templateId={id} clip />
+                    <ScaledCV cv={cv.personal.firstName ? cv : sampleCV()} templateId={family === 'design' && id.endsWith('.carlito') ? id.replace('.carlito', '.poppins') : id} clip />
                     <span>{r.layout.name}</span>
                   </button>
                 );
@@ -397,7 +436,7 @@ export default function Builder({ cv, setCv, go }) {
                 <button type="button" role="radio" aria-checked={t.palette.id === p.id} key={p.id} title={p.name} aria-label={p.name} className={`swatch${t.palette.id === p.id ? ' is-on' : ''}`} style={{ background: p.color }} onClick={() => up({ template: templateId(t.layout.id, p.id, t.font.id) })} />
               ))}
             </div>
-            <p className="small"><button type="button" className="link-btn" onClick={() => go('modeles')}>Parcourir les 1 344 modèles</button></p>
+            <p className="small"><button type="button" className="link-btn" onClick={() => go('modeles')}>Parcourir les {TEMPLATE_COUNT.toLocaleString('fr-FR')} modèles</button></p>
 
             <h3 className="sub-title">Adapter le CV à une offre précise</h3>
             <p className="muted">Collez l’annonce. On repère les mots-clés que l’ATS va chercher et ceux qui manquent à votre CV.</p>
@@ -425,6 +464,7 @@ export default function Builder({ cv, setCv, go }) {
               <button type="button" className="btn btn-ghost" onClick={() => doExport('docx')}>{busy === 'docx' ? 'Création…' : 'Télécharger en Word'}</button>
               <button type="button" className="btn btn-ghost" onClick={() => doExport('txt')}>Texte brut</button>
             </div>
+            {isDesign(t.layout.id) && <p className="note small">Modèle Design : l’export Word et le texte brut reprennent une mise en page simple, idéale pour les formulaires en ligne. Pour un grand groupe, pensez à télécharger aussi une version Essentiel.</p>}
             <p className="small muted">PDF : dans la fenêtre d’impression, choisissez « Enregistrer au format PDF » et désactivez « En-têtes et pieds de page ». Word : à envoyer quand l’offre demande un .docx. Texte brut : à coller dans les formulaires en ligne.</p>
           </>
         );
@@ -477,6 +517,7 @@ export default function Builder({ cv, setCv, go }) {
       </button>
 
       <div className="print-root" aria-hidden="true">
+        {isDesign(t.layout.id) && <style>{'@page { margin: 0; }'}</style>}
         <CVRender cv={cv} templateId={cv.template || templateId(t.layout.id, t.palette.id, t.font.id)} />
       </div>
     </div>
