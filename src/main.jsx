@@ -40,11 +40,14 @@ function App() {
     <>
       <a className="skip" href="#main">Aller au contenu</a>
       <header className="topbar">
-        <a href="#/" className="brand" aria-label="NexaCV, accueil"><span className="brand-mark" aria-hidden="true">N</span>NexaCV</a>
-        <nav className="topnav">
-          <a href="#/modeles" aria-current={page === 'modeles' ? 'page' : undefined}>Modèles</a>
-          <a href="#/creer" className="btn btn-primary btn-sm" aria-current={page === 'creer' ? 'page' : undefined}>Créer mon CV</a>
-        </nav>
+        <div className="topbar-inner">
+          <a href="#/" className="brand" aria-label="NexaCV, accueil"><span className="brand-mark" aria-hidden="true">N</span><span>NexaCV<span className="brand-dot">.</span></span></a>
+          <nav className="topnav">
+            <a href="#/" className="nav-home" aria-current={page !== 'creer' && page !== 'modeles' ? 'page' : undefined}>Accueil</a>
+            <a href="#/modeles" aria-current={page === 'modeles' ? 'page' : undefined}>Modèles</a>
+            <a href="#/creer" className="btn btn-light btn-sm" aria-current={page === 'creer' ? 'page' : undefined}>Créer mon CV</a>
+          </nav>
+        </div>
       </header>
       <main id="main">
         {page === 'creer' && <Builder key="b" cv={cv} setCv={setCv} go={go} />}

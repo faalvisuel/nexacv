@@ -1,104 +1,179 @@
-import { useMemo } from 'react';
+import { useMemo, useState } from 'react';
 import { JOBS } from '../data/jobs.js';
 import { TEMPLATE_COUNT } from '../data/templates.js';
 import { sampleCV, hasData } from '../lib/store.js';
 import ScaledCV from '../components/ScaledCV.jsx';
+import { ScoreRing } from '../components/AtsPanel.jsx';
 
-const HIGHLIGHT = ['Chargée de marketing digital', 'SEO', 'Meta Ads', '85 000 abonnés', '35 %', 'Google Analytics 4'];
+export const Arrow = () => (
+  <span className="arrow-dot" aria-hidden="true">
+    <svg width="14" height="14" viewBox="0 0 14 14"><path d="M3 11L11 3M11 3H5M11 3V9" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" /></svg>
+  </span>
+);
 
-function HeroSheet() {
-  // Feuille de démonstration : les mots-clés reçoivent un coup de surligneur, un par un.
-  return (
-    <div className="hero-sheet" aria-hidden="true">
-      <div className="hs-paper">
-        <p className="hs-name">Aïssatou Ndiaye</p>
-        <p className="hs-title"><mark style={{ '--d': '0.3s' }}>Chargée de marketing digital</mark></p>
-        <p className="hs-contact">aissatou.ndiaye@email.com | +221 77 000 00 00 | Dakar</p>
-        <p className="hs-h">Profil</p>
-        <p className="hs-p">5 ans d’expérience en <mark style={{ '--d': '0.7s' }}>SEO</mark>, <mark style={{ '--d': '0.95s' }}>Meta Ads</mark> et emailing, pour des marques de grande consommation.</p>
-        <p className="hs-h">Expérience professionnelle</p>
-        <p className="hs-role"><strong>Chargée de marketing digital</strong> — Teranga Télécom <span>03/2022 – Aujourd’hui</span></p>
-        <ul>
-          <li>Fait croître la communauté Instagram de 12 000 à <mark style={{ '--d': '1.3s' }}>85 000 abonnés</mark></li>
-          <li>Réduit le coût par acquisition de <mark style={{ '--d': '1.6s' }}>35 %</mark> sur les campagnes payantes</li>
-          <li>Piloté les tableaux de bord <mark style={{ '--d': '1.9s' }}>Google Analytics 4</mark> de 4 marques</li>
-        </ul>
-        <p className="hs-h">Compétences</p>
-        <p className="hs-p">SEO, Meta Ads, Google Ads, Emailing, Canva, CRM, Content marketing</p>
-      </div>
-      <div className="hs-badge">
-        <span className="hs-score">92</span>
-        <span>Score ATS<br />6/6 mots-clés de l’offre</span>
-      </div>
-    </div>
-  );
-}
+const STEPS = [
+  { t: 'Choisissez votre métier', tags: ['22 métiers', 'Compétences suggérées', 'Mise en page adaptée'], d: 'On part du poste que vous visez : les compétences, les exemples de phrases et le modèle recommandé s’adaptent tout de suite.' },
+  { t: 'Vos coordonnées', tags: ['Sans photo', 'Titre du poste', 'Ville'], d: 'Juste l’essentiel. Le titre du poste visé est repris de l’offre : c’est le premier mot-clé que l’ATS compare.' },
+  { t: 'Vos expériences', tags: ['Verbes d’action', 'Résultats chiffrés', 'Exemples par métier'], d: 'Chaque ligne est vérifiée pendant que vous tapez : commence-t-elle par un verbe ? Contient-elle un chiffre ?' },
+  { t: 'Formation et certifications', tags: ['Diplôme le plus élevé', 'Mentions', 'Certifications'], d: 'Du plus récent au plus ancien, sans remonter avant le baccalauréat.' },
+  { t: 'Compétences et langues', tags: ['Mots-clés ATS', 'Qualités', 'Niveaux CECRL'], d: 'Un clic sur les compétences que les recruteurs de votre secteur recherchent. Ajoutez les vôtres en une frappe.' },
+  { t: 'Votre profil', tags: ['Texte proposé', '3 phrases', 'Personnalisable'], d: 'On rédige une proposition à partir de vos réponses. Vous l’ajustez avec une réussite concrète.' },
+  { t: 'Modèle, offre et téléchargement', tags: ['1 344 modèles', 'Analyse de l’offre', 'PDF, Word, texte'], d: 'Collez l’annonce : les mots-clés trouvés sont surlignés, ceux qui manquent s’ajoutent d’un clic. Puis téléchargez.' },
+];
 
 export default function Landing({ go, cv, startSample }) {
   const demo = useMemo(() => sampleCV(), []);
-  const strip = ['moderne.ocean.lato', 'classique.encre.georgia', 'bandeau.baobab.opensans', 'timeline.bordeaux.sourcesans', 'elegant.prune.garamond', 'tech.cobalt.roboto'];
+  const [open, setOpen] = useState(2);
   const resume = hasData(cv);
+  const arc = ['photo-2.jpg', 'executif.encre.georgia', 'photo-1.jpg', 'moderne.teranga.opensans', 'photo-3.jpg', 'timeline.baobab.sourcesans', 'elegant.bordeaux.garamond'];
+  const strip = ['moderne.teranga.lato', 'classique.encre.georgia', 'bandeau.baobab.opensans', 'timeline.bordeaux.sourcesans', 'impact.noir.roboto', 'sante.sarcelle.carlito'];
+  const marquee = [...JOBS, ...JOBS].map((j) => j.label);
 
   return (
     <div className="landing">
-      <section className="hero">
-        <div className="hero-copy">
-          <h1 className="hero-h1">Un CV que les logiciels de tri savent lire. Et que les recruteurs retiennent.</h1>
-          <p className="hero-lead">
-            La plupart des grandes entreprises font passer les candidatures par un logiciel de tri (ATS) avant qu’un humain ne les lise.
-            NexaCV vous guide question par question et vérifie, en direct, tout ce que ces logiciels regardent.
-          </p>
-          <div className="hero-cta">
-            <button type="button" className="btn btn-primary btn-lg" onClick={() => go('creer')}>{resume ? 'Reprendre mon CV' : 'Créer mon CV gratuitement'}</button>
-            <button type="button" className="btn btn-ghost btn-lg" onClick={startSample}>Voir un exemple rempli</button>
+      <section className="hero2">
+        <p className="tag-pill"><span className="tag-dot" aria-hidden="true" />Lisible par Workday, Taleo, Greenhouse et les autres ATS</p>
+        <h1 className="hero2-h1">
+          <span className="h1-serif">Passez les filtres des recruteurs,</span>
+          <span className="h1-sans">décrochez plus d’<em>entretiens</em>.</span>
+        </h1>
+        <p className="hero2-lead">Répondez à quelques questions simples. NexaCV construit un CV clair, chiffré et adapté à votre métier, et vérifie en direct ce que les logiciels de tri regardent.</p>
+        <div className="hero-cta">
+          <button type="button" className="btn btn-primary btn-lg btn-pill" onClick={() => go('creer')}>{resume ? 'Reprendre mon CV' : 'Créer mon CV gratuitement'}<Arrow /></button>
+          <button type="button" className="btn btn-ghost btn-lg btn-pill" onClick={startSample}>Voir un exemple rempli</button>
+        </div>
+
+        <div className="arc" aria-hidden="true">
+          {arc.map((id, i) => (
+            <div className={`arc-card${id.endsWith('.jpg') ? ' is-photo' : ''}`} key={id} style={{ '--i': i - 3, '--a': Math.abs(i - 3) }}>
+              {id.endsWith('.jpg') ? <img src={`./${id}`} alt="" loading="eager" /> : <ScaledCV cv={demo} templateId={id} clip />}
+            </div>
+          ))}
+          <div className="float float-score"><ScoreRing score={96} size={46} /><span><strong>Score ATS</strong><br />Excellent</span></div>
+          <div className="float float-kw">
+            <span className="float-title">Mots-clés de l’offre</span>
+            <span className="float-chips"><mark>SEO</mark><mark>Meta Ads</mark><mark>Google Analytics</mark><span className="miss">+ CRM</span></span>
           </div>
-          <p className="hero-proof">Environ 10 minutes. Sans inscription. PDF et Word.</p>
         </div>
-        <HeroSheet />
-      </section>
 
-      <section className="band">
-        <div className="wrap">
-          <h2 className="h2">Trois étapes, aucune page blanche</h2>
-          <ol className="how">
-            <li>
-              <h3>Choisissez votre métier</h3>
-              <p>{JOBS.length} métiers pré-configurés. On vous propose les compétences que les recruteurs du secteur recherchent.</p>
-            </li>
-            <li>
-              <h3>Répondez aux questions</h3>
-              <p>Une étape à la fois. Des exemples de phrases toutes prêtes : il suffit de mettre vos chiffres.</p>
-            </li>
-            <li>
-              <h3>Téléchargez</h3>
-              <p>Choisissez un modèle, collez l’offre visée pour vérifier les mots-clés, exportez en PDF ou Word.</p>
-            </li>
-          </ol>
+        <div className="hero-feats">
+          <div><strong>Gratuit</strong><span>Sans inscription, sans filigrane.</span></div>
+          <div><strong>Privé</strong><span>Vos données restent sur votre appareil.</span></div>
+          <div><strong>Rapide</strong><span>Environ 10 minutes, étape par étape.</span></div>
         </div>
       </section>
 
-      <section className="wrap checks-sec">
-        <div>
-          <h2 className="h2">Ce que nous vérifions pendant que vous écrivez</h2>
-          <p className="muted">Le score ATS se met à jour à chaque frappe. Chaque point vous dit quoi corriger.</p>
+      <div className="marquee" aria-hidden="true">
+        <div className="marquee-track">
+          {marquee.map((m, i) => <span key={i}>{m}<i>✦</i></span>)}
         </div>
-        <ul className="check-list">
-          <li><strong>Lisibilité machine.</strong> Une colonne de lecture, du vrai texte, aucune image ni tableau piège.</li>
-          <li><strong>Mots-clés de l’offre.</strong> Collez l’annonce : on surligne ce qui correspond et ce qui manque.</li>
-          <li><strong>Titres standards.</strong> « Expérience professionnelle », « Formation », « Compétences » : les intitulés que les ATS reconnaissent.</li>
-          <li><strong>Résultats chiffrés.</strong> Chaque réalisation est contrôlée : verbe d’action au début, chiffre dedans.</li>
-          <li><strong>Dates complètes.</strong> Les ATS calculent vos années d’expérience à partir d’elles.</li>
-          <li><strong>Longueur et profil.</strong> Ni trop court, ni trop long, avec un résumé qui accroche.</li>
-        </ul>
+      </div>
+
+      <section className="wrap stats">
+        <div><strong>{TEMPLATE_COUNT.toLocaleString('fr-FR')}</strong><span>modèles compatibles ATS</span></div>
+        <div><strong>{JOBS.length}</strong><span>métiers pré-configurés</span></div>
+        <div><strong>16</strong><span>points vérifiés en direct</span></div>
+        <div><strong>3</strong><span>formats : PDF, Word, texte</span></div>
       </section>
 
-      <section className="band band-ink">
-        <div className="wrap">
-          <div className="tpl-head">
-            <h2 className="h2">{TEMPLATE_COUNT.toLocaleString('fr-FR')} modèles, classés par métier</h2>
-            <button type="button" className="btn btn-marker" onClick={() => go('modeles')}>Parcourir les modèles</button>
+      <section className="wrap interview">
+        <div className="iv-photo">
+          <img src="./photo-4.jpg" alt="Un candidat souriant tend la main au début d’un entretien" loading="lazy" />
+          <div className="iv-chip"><span className="iv-dot" aria-hidden="true" />Prochaine étape : l’entretien</div>
+        </div>
+        <div className="iv-text">
+          <p className="tag-pill small-pill"><span className="tag-dot" aria-hidden="true" />Pourquoi c’est important</p>
+          <h2 className="h2">Un bon parcours mal présenté finit souvent à la corbeille</h2>
+          <p className="muted">Avant d’arriver chez un recruteur, votre CV est lu par un logiciel. S’il ne trouve pas vos dates, votre titre de poste ou les bons mots-clés, il vous classe loin derrière, même si vous êtes la bonne personne.</p>
+          <ul className="iv-list">
+            <li>Votre titre de poste reprend celui de l’offre</li>
+            <li>Vos réalisations montrent des résultats chiffrés</li>
+            <li>Les compétences demandées apparaissent en toutes lettres</li>
+          </ul>
+        </div>
+      </section>
+
+      <section className="wrap steps-sec">
+        <div className="sec-head">
+          <div>
+            <p className="tag-pill small-pill"><span className="tag-dot" aria-hidden="true" />Comment ça marche</p>
+            <h2 className="h2">Sept étapes courtes, aucune page blanche</h2>
           </div>
-          <p className="on-ink-muted">12 mises en page, 14 couleurs, 8 polices. Sobres là où il faut l’être, affirmés quand le métier le permet. Tous testés pour les ATS.</p>
+          <button type="button" className="btn btn-accent btn-pill" onClick={() => go('creer')}>Commencer<Arrow /></button>
+        </div>
+        <div className="steps-grid">
+        <ol className="acc">
+          {STEPS.map((s, i) => (
+            <li key={s.t} className={`acc-item${open === i ? ' is-open' : ''}`}>
+              <button type="button" className="acc-btn" onClick={() => setOpen(open === i ? -1 : i)} aria-expanded={open === i}>
+                <span className="acc-n">{String(i + 1).padStart(2, '0')}</span>
+                <span className="acc-t">{s.t}</span>
+                <Arrow />
+              </button>
+              {open === i && (
+                <div className="acc-body">
+                  <p className="acc-tags">{s.tags.map((t) => <span key={t}>{t}</span>)}</p>
+                  <p>{s.d}</p>
+                </div>
+              )}
+            </li>
+          ))}
+        </ol>
+        <figure className="steps-photo">
+          <img src="./photo-5.jpg" alt="Un entretien en visioconférence avec un candidat souriant" loading="lazy" />
+          <figcaption>De la première question au téléchargement : environ 10 minutes.</figcaption>
+        </figure>
+        </div>
+      </section>
+
+      <section className="wrap bento-sec">
+        <div className="center-head">
+          <h2 className="h2">Tout ce qu’un recruteur veut voir, rien de ce qu’un ATS ne sait pas lire</h2>
+          <p className="muted">Une colonne de lecture, du vrai texte, des titres standards. Et des conseils précis à chaque étape.</p>
+        </div>
+        <div className="bento">
+          <article className="b-card b-dark">
+            <div className="b-sheet"><ScaledCV cv={demo} templateId="moderne.teranga.lato" clip /></div>
+            <div className="b-text">
+              <h3>Un aperçu qui se remplit pendant que vous écrivez</h3>
+              <p>Chaque réponse apparaît aussitôt sur la feuille A4, dans le modèle choisi.</p>
+            </div>
+          </article>
+          <article className="b-card b-sand">
+            <ScoreRing score={88} size={84} />
+            <h3>Score ATS en direct</h3>
+            <p>16 critères : coordonnées, dates, verbes d’action, chiffres, longueur, mots-clés. Chaque point indique quoi corriger.</p>
+          </article>
+          <article className="b-card b-cream">
+            <h3>Des phrases prêtes pour votre métier</h3>
+            <ul className="b-lines">
+              <li>Réduit le délai de clôture mensuelle de <mark>8</mark> à <mark>4</mark> jours</li>
+              <li>Signé <mark>14</mark> nouveaux clients grands comptes en <mark>9</mark> mois</li>
+              <li>Assuré le support de <mark>250</mark> utilisateurs</li>
+            </ul>
+            <p>Remplacez les chiffres par les vôtres, c’est tout.</p>
+          </article>
+          <article className="b-card b-olive">
+            <img className="b-photo" src="./photo-3.jpg" alt="Une candidate souriante au bureau" loading="lazy" />
+            <div className="b-text">
+              <h3>L’offre d’emploi, décodée</h3>
+              <p>Collez l’annonce. Les mots-clés présents sont surlignés, les manquants s’ajoutent d’un clic.</p>
+            </div>
+            <p className="b-kw"><mark>Comptabilité générale</mark><mark>SYSCOHADA</mark><mark>Sage</mark><span>+ Trésorerie</span><span>+ Audit</span></p>
+          </article>
+        </div>
+      </section>
+
+      <section className="tpl-band">
+        <div className="wrap">
+          <div className="sec-head">
+            <div>
+              <p className="tag-pill small-pill on-dark"><span className="tag-dot" aria-hidden="true" />Modèles</p>
+              <h2 className="h2">{TEMPLATE_COUNT.toLocaleString('fr-FR')} modèles, classés par métier</h2>
+              <p className="on-ink-muted">12 mises en page, 14 couleurs, 8 polices. Sobres pour la finance et le droit, plus affirmés pour la création et le commerce.</p>
+            </div>
+            <button type="button" className="btn btn-accent btn-pill" onClick={() => go('modeles')}>Parcourir les modèles<Arrow /></button>
+          </div>
           <div className="tpl-strip">
             {strip.map((id) => (
               <button type="button" className="tpl-strip-item" key={id} onClick={() => go('modeles')} aria-label="Voir les modèles">
@@ -113,7 +188,7 @@ export default function Landing({ go, cv, startSample }) {
         <h2 className="h2">Préparé pour votre métier</h2>
         <div className="job-tags">
           {JOBS.map((j) => (
-            <button type="button" key={j.id} className="job-tag" onClick={() => go('creer', j.id)}>{j.label}</button>
+            <button type="button" key={j.id} className="job-tag" onClick={() => go('creer', j.id)}><span aria-hidden="true">{j.icon}</span>{j.label}</button>
           ))}
         </div>
       </section>
@@ -126,7 +201,7 @@ export default function Landing({ go, cv, startSample }) {
         </details>
         <details>
           <summary>Est-ce que NexaCV garantit un entretien ?</summary>
-          <p>Personne ne peut honnêtement le garantir : la décision dépend de votre parcours et du recruteur. Ce que nous garantissons, c’est que votre CV sera lu correctement par les logiciels et qu’il mettra en avant ce que les recruteurs cherchent. C’est ce qui multiplie vos chances d’être rappelé.</p>
+          <p>Personne ne peut honnêtement le garantir : la décision dépend de votre parcours et du recruteur. Ce que nous faisons, c’est rendre votre CV lisible par les logiciels et mettre en avant ce que les recruteurs cherchent. C’est ce qui augmente vos chances d’être rappelé.</p>
         </details>
         <details>
           <summary>Faut-il mettre une photo ?</summary>
@@ -143,10 +218,14 @@ export default function Landing({ go, cv, startSample }) {
       </section>
 
       <section className="final-cta">
-        <h2 className="h2">Votre prochain CV commence par une question : quel poste visez-vous ?</h2>
-        <button type="button" className="btn btn-marker btn-lg" onClick={() => go('creer')}>Commencer</button>
+        <div className="final-inner">
+          <div className="final-text">
+            <h2 className="h2">Votre prochain CV commence par une question : quel poste visez-vous ?</h2>
+            <button type="button" className="btn btn-primary btn-lg btn-pill" onClick={() => go('creer')}>Commencer maintenant<Arrow /></button>
+          </div>
+          <img className="final-photo" src="./photo-6.jpg" alt="Une jeune professionnelle présente un dossier à un collègue" loading="lazy" />
+        </div>
       </section>
     </div>
   );
 }
-
