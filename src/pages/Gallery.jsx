@@ -6,7 +6,7 @@ import ScaledCV from '../components/ScaledCV.jsx';
 
 const PAGE = 24;
 
-export default function Gallery({ cv, setCv, go }) {
+export default function Gallery({ cv, setCv, go, premium }) {
   const [jobId, setJobId] = useState(cv.jobId || '');
   const [layout, setLayout] = useState('');
   const [family, setFamily] = useState('');
@@ -70,7 +70,7 @@ export default function Gallery({ cv, setCv, go }) {
         {list.slice(0, shown).map((t) => (
           <figure className="g-card" key={t.id}>
             <button type="button" className="g-thumb" onClick={() => use(t.id)} aria-label={`Utiliser le modèle ${t.layout.name} ${t.palette.name} ${t.font.name}`}>
-              <span className={`g-badge${t.layout.family === 'design' ? '' : ' ess'}`}>{t.layout.family === 'design' ? 'Design' : 'ATS strict'}</span>
+              <span className={`g-badge${t.layout.family === 'design' ? '' : ' ess'}`}>{t.layout.family === 'design' ? (premium ? 'Design' : 'Design · Premium') : 'Gratuit · ATS strict'}</span>
               <ScaledCV cv={demo} templateId={t.id} clip />
               <span className="g-use">Utiliser ce modèle</span>
             </button>

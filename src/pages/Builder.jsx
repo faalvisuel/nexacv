@@ -7,6 +7,7 @@ import { exportPDF, exportDOCX, exportTXT } from '../lib/export.js';
 import ScaledCV from '../components/ScaledCV.jsx';
 import CVRender from '../components/CVRender.jsx';
 import AtsPanel, { ScoreRing } from '../components/AtsPanel.jsx';
+import { Plans } from './Pricing.jsx';
 
 const STEPS = [
   { id: 'objectif', label: 'Objectif' },
@@ -144,7 +145,8 @@ function fillSummary(cv) {
     .replace(/\{field\}/g, cv.field || 'mon domaine');
 }
 
-export default function Builder({ cv, setCv, go }) {
+export default function Builder({ cv, setCv, go, account = {}, syncStatus = 'idle' }) {
+  const [paywall, setPaywall] = useState(false);
   const [step, setStepRaw] = useState(Math.min(cv.step || 0, STEPS.length - 1));
   const [showPreview, setShowPreview] = useState(false);
   const [jobQuery, setJobQuery] = useState('');
@@ -199,7 +201,10 @@ export default function Builder({ cv, setCv, go }) {
   const doExport = async (kind) => {
     setBusy(kind);
     try {
-      if (kind === 'pdf') exportPDF(cv);
+      if (kind === 'pdf') {
+        if (isDesign(parseTemplate(cv.template).layout.id) && !account.premium) { setPaywall(true); return; }
+        exportPDF(cv);
+      }
       if (kind === 'docx') await exportDOCX(cv);
       if (kind === 'txt') exportTXT(cv);
     } finally {
@@ -413,7 +418,7 @@ export default function Builder({ cv, setCv, go }) {
                 return (
                   <button type="button" key={r.layout.id} className={`tpl-mini${t.layout.id === r.layout.id ? ' is-on' : ''}`} onClick={() => up({ template: id })} aria-pressed={t.layout.id === r.layout.id}>
                     <ScaledCV cv={cv.personal.firstName ? cv : sampleCV()} templateId={family === 'design' && id.endsWith('.carlito') ? id.replace('.carlito', '.poppins') : id} clip />
-                    <span>{r.layout.name}</span>
+                    <span>{r.layout.name}{r.layout.family === 'design' && !account.premium && <em className="prem-tag">Premium</em>}</span>
                   </button>
                 );
               })}
@@ -500,7 +505,11 @@ export default function Builder({ cv, setCv, go }) {
               <button type="button" className="btn btn-primary" onClick={() => doExport('pdf')}>Télécharger en PDF</button>
             )}
           </div>
-          <p className="small muted save-note">Enregistré automatiquement sur cet appareil. <button type="button" className="link-btn" onClick={() => { if (window.confirm('Effacer toutes vos informations et recommencer ?')) { setCv(emptyCV()); setStepRaw(0); } }}>Recommencer à zéro</button></p>
+          <p className="small muted save-note">
+            {account.user
+              ? (syncStatus === 'saving' ? 'Sauvegarde dans votre compte…' : syncStatus === 'error' ? 'Sauvegarde en ligne impossible pour l’instant, vos données restent sur cet appareil.' : 'Sauvegardé dans votre compte.')
+              : <>Enregistré sur cet appareil. <button type="button" className="link-btn" onClick={() => go('compte')}>Créez un compte</button> pour le retrouver partout.</>}
+            {' '}<button type="button" className="link-btn" onClick={() => { if (window.confirm('Effacer toutes vos informations et recommencer ?')) { setCv(emptyCV()); setStepRaw(0); } }}>Recommencer à zéro</button></p>
         </section>
 
         <aside className={`preview-pane${showPreview ? ' is-open' : ''}`} aria-label="Aperçu du CV">
@@ -515,6 +524,22 @@ export default function Builder({ cv, setCv, go }) {
       <button type="button" className="fab" onClick={() => setShowPreview(true)} aria-label="Voir l’aperçu et le score">
         <ScoreRing score={report.score} size={40} /> Aperçu
       </button>
+
+      {paywall && (
+        <div className="modal-back" role="presentation" onClick={(e) => { if (e.target === e.currentTarget) setPaywall(false); }}>
+          <div className="modal" role="dialog" aria-modal="true" aria-labelledby="pw-title">
+            <button type="button" className="icon-btn modal-x" onClick={() => setPaywall(false)} aria-label="Fermer">×</button>
+            <h2 id="pw-title" className="h2">Ce modèle Design est Premium</h2>
+            <p className="muted">Débloquez tous les modèles Design avec photo. Ou téléchargez gratuitement votre CV dans un modèle Essentiel, idéal pour les ATS.</p>
+            <Plans user={account.user} premium={account.premium} profile={account.profile} go={(p, j, o) => { setPaywall(false); go(p, j, o); }} compact />
+            <button type="button" className="link-btn" onClick={() => {
+              const ess = templatesFor(cv.jobId).find((x) => x.layout.family === 'essentiel');
+              setCv((c) => ({ ...c, template: templateId(ess.layout.id, t.palette.id, 'carlito') }));
+              setPaywall(false);
+            }}>Passer à un modèle Essentiel gratuit</button>
+          </div>
+        </div>
+      )}
 
       <div className="print-root" aria-hidden="true">
         {isDesign(t.layout.id) && <style>{'@page { margin: 0; }'}</style>}
